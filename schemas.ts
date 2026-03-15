@@ -2,8 +2,11 @@ import { z } from 'zod';
 
 import { POST_TAGS } from '@/constants';
 
+/**
+ * 게시글 작성/수정 폼 스키마
+ */
 export const postFormSchema = z.object({
-  coverImage: z.instanceof(File).nullable(),
+  coverUrl: z.string().nullable(),
   slug: z
     .string()
     .min(1, '슬러그를 입력해주세요')
@@ -14,4 +17,5 @@ export const postFormSchema = z.object({
   content: z.string().min(1, '내용을 입력해주세요'),
 });
 
+/* 게시글 작성/수정 폼 타입 */
 export type PostFormSchema = z.infer<typeof postFormSchema>;

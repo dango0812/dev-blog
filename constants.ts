@@ -6,4 +6,12 @@ export type PostTag = (typeof POST_TAGS)[number];
 export const TAG_LABEL: Record<PostTag, string> = {
   tech: '기술',
   insight: '인사이트',
-};
+} as const;
+
+/** API 엔드포인트 */
+export const API_ROUTES = {
+  UPLOAD_IMAGE: '/api/upload/image',
+  POSTS: {
+    CREATE: '/api/posts',
+  },
+} as const;
