@@ -5,6 +5,47 @@ import { postFormSchema } from '@/schemas';
 import type { Post } from '@/types';
 
 /**
+ * GET /api/posts
+ *
+ * 게시글 목록 조회 (최신순)
+ */
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const tag = searchParams.get('tag');
+
+  try {
+    let rows: Post[];
+
+    if (tag) {
+      rows = (await db`
+        SELECT
+          id, slug, title, type, tag, content,
+          cover_url  AS "coverUrl",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM posts
+        WHERE tag = ${tag}
+        ORDER BY created_at DESC
+      `) as Post[];
+    } else {
+      rows = (await db`
+        SELECT
+          id, slug, title, type, tag, content,
+          cover_url  AS "coverUrl",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM posts
+        ORDER BY created_at DESC
+      `) as Post[];
+    }
+
+    return NextResponse.json(rows);
+  } catch {
+    return NextResponse.json({ error: '게시글을 불러오지 못했어요' }, { status: 500 });
+  }
+}
+
+/**
  * POST /api/posts
  *
  * 새 게시글을 생성
@@ -25,16 +66,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { slug, title, tag, content, coverUrl } = result.data;
+  const { slug, title, type, tag, content, coverUrl } = result.data;
 
   try {
     const rows = await db`
-      INSERT INTO posts (slug, title, tag, content, cover_url)
-      VALUES (${slug}, ${title}, ${tag}, ${content}, ${coverUrl})
+      INSERT INTO posts (slug, title, type, tag, content, cover_url)
+      VALUES (${slug}, ${title}, ${type}, ${tag}, ${content}, ${coverUrl})
       RETURNING
         id,
         slug,
         title,
+        type,
         tag,
         content,
         cover_url   AS "coverUrl",
