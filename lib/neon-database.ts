@@ -1,6 +1,6 @@
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 
-import { env } from '@/config/env';
+import { env } from '@/lib/env';
 
 import 'server-only';
 

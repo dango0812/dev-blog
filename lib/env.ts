@@ -9,12 +9,20 @@ import { z } from 'zod';
 export const env = createEnv({
   server: {
     DATABASE_URL: z.url(),
+    CLOUDINARY_API_URL: z.url(),
+    CLOUDINARY_CLOUD_NAME: z.string().min(1),
+    CLOUDINARY_API_KEY: z.string().min(1),
+    CLOUDINARY_API_SECRET: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.url().default('http://localhost:3000'),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    CLOUDINARY_API_URL: process.env.CLOUDINARY_API_URL,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 });
