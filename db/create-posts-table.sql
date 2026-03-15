@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS posts (
   id         SERIAL PRIMARY KEY,
   slug       VARCHAR(80)  NOT NULL UNIQUE,
   title      VARCHAR(100) NOT NULL,
+  type       VARCHAR(20)  NOT NULL,
   tag        VARCHAR(20)  NOT NULL,
   content    TEXT         NOT NULL,
   cover_url  TEXT,

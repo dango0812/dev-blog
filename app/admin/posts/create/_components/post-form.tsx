@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { Button, Flex, Spinner } from '@/components/ui';
 import { API_ROUTES } from '@/constants';
 import { type PostFormSchema, postFormSchema } from '@/schemas';
 
+import { CategorySelector } from './category-selector';
 import { ContentEditor } from './content-editor';
 import { CoverImageUpload } from './cover-image-upload';
 import { SlugField } from './slug-field';
@@ -18,7 +19,8 @@ const defaultValues: PostFormSchema = {
   slug: '',
   coverUrl: null,
   title: '',
-  tag: 'tech',
+  type: 'tech',
+  tag: '2026',
   content: '',
 };
 
@@ -60,6 +62,7 @@ export function PostForm() {
           <SlugField />
           <TitleField />
           <CoverImageUpload />
+          <CategorySelector />
           <TagSelector />
           <ContentEditor />
 

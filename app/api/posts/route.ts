@@ -25,16 +25,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { slug, title, tag, content, coverUrl } = result.data;
+  const { slug, title, type, tag, content, coverUrl } = result.data;
 
   try {
     const rows = await db`
-      INSERT INTO posts (slug, title, tag, content, cover_url)
-      VALUES (${slug}, ${title}, ${tag}, ${content}, ${coverUrl})
+      INSERT INTO posts (slug, title, type, tag, content, cover_url)
+      VALUES (${slug}, ${title}, ${type}, ${tag}, ${content}, ${coverUrl})
       RETURNING
         id,
         slug,
         title,
+        type,
         tag,
         content,
         cover_url   AS "coverUrl",
