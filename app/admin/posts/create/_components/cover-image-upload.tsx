@@ -82,7 +82,13 @@ export function CoverImageUpload() {
 
       {field.value ? (
         <div className="relative aspect-video overflow-hidden rounded-lg border border-border">
-          <Image src={field.value} alt="커버 이미지 미리보기" fill className="object-cover" />
+          <Image
+            src={field.value}
+            alt="커버 이미지 미리보기"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+          />
           <Button
             type="button"
             variant="ghost"

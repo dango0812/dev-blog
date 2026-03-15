@@ -26,6 +26,7 @@ export function TagSelector() {
             type="button"
             size="sm"
             variant={field.value === tag ? 'destructive' : 'outline'}
+            aria-pressed={field.value === tag}
             onClick={() => field.onChange(tag)}
           >
             {TAG_LABEL[tag]}

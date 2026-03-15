@@ -22,6 +22,8 @@ export function ToolbarButton({ title, isActive, disabled, onClick, children }: 
       size="icon-sm"
       title={title}
       disabled={disabled}
+      aria-label={title}
+      aria-pressed={isActive ?? false}
       className={cn(isActive && 'bg-muted text-foreground')}
       onClick={onClick}
     >
