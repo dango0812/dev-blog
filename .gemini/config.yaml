@@ -1,0 +1,12 @@
+codeReview:
+  styleguide:
+    - .gemini/styleguide.md
+
+  ignore:
+    - '**/node_modules/**'
+    - '**/.github/**'
+    - '**/.vscode/**'
+    - '**/public/**'
+    - '**/*.md'
+    - '**/*.json'
+    - '**/pnpm-lock.yaml'
