@@ -3,33 +3,33 @@
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Button, Flex, Text } from '@/components/ui';
-import { POST_TAGS } from '@/constants';
+import { POST_TYPES, TYPE_LABEL } from '@/constants';
 import type { PostFormSchema } from '@/schemas';
 
-export function TagSelector() {
+export function CategorySelector() {
   const { control } = useFormContext<PostFormSchema>();
   const {
     field,
     fieldState: { error },
-  } = useController({ name: 'tag', control });
+  } = useController({ name: 'type', control });
 
   return (
     <Flex direction="column" className="gap-2">
       <Text as="label" className="text-sm font-medium">
-        태그
+        타입
       </Text>
 
-      <Flex className="flex-wrap gap-2">
-        {POST_TAGS.map(tag => (
+      <Flex className="gap-2">
+        {POST_TYPES.map(type => (
           <Button
-            key={tag}
+            key={type}
             type="button"
             size="sm"
-            variant={field.value === tag ? 'destructive' : 'outline'}
-            aria-pressed={field.value === tag}
-            onClick={() => field.onChange(tag)}
+            variant={field.value === type ? 'destructive' : 'outline'}
+            aria-pressed={field.value === type}
+            onClick={() => field.onChange(type)}
           >
-            {tag}
+            {TYPE_LABEL[type]}
           </Button>
         ))}
       </Flex>
