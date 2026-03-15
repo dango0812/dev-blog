@@ -24,7 +24,7 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9",
     "@next/eslint-plugin-next": "^16",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
@@ -35,7 +35,6 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^5",
-    "eslint-plugin-react-refresh": "^0.4.20",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^16.1.0",
     "husky": "^9",
@@ -45,7 +44,7 @@
     "prettier-plugin-merge": "^0.7.1",
     "prettier-plugin-tailwindcss": "^0.6.12",
     "tailwindcss": "^4",
-    "typescript": "^5",
+    "typescript": "^5.8",
     "typescript-eslint": "^8"
   }
 }

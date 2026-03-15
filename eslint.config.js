@@ -4,7 +4,6 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import prettier from 'eslint-config-prettier';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -38,7 +37,6 @@ export default defineConfig([
     plugins: {
       'simple-import-sort': simpleImportSort,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
       'jsx-a11y': jsxA11y,
       '@next/next': nextPlugin,
     },
@@ -77,8 +75,6 @@ export default defineConfig([
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-
       'jsx-a11y/alt-text': 'warn',
       'jsx-a11y/anchor-is-valid': 'warn',
       'jsx-a11y/no-autofocus': 'warn',
@@ -105,7 +101,10 @@ export default defineConfig([
       '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, caughtErrors: 'none' }],
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-empty-object-type': 'error',
-      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
       '@typescript-eslint/no-inferrable-types': 'warn',
       '@typescript-eslint/no-empty-function': 'error',
       '@typescript-eslint/no-require-imports': 'warn',
