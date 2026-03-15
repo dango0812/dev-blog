@@ -1,5 +1,7 @@
 'use client';
 
+import type { ReactNode } from 'react';
+
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/tailwind';
 
@@ -8,7 +10,7 @@ interface ToolbarButtonProps {
   isActive?: boolean;
   disabled?: boolean;
   onClick: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 /** 에디터 툴바 내 개별 아이콘 버튼 */

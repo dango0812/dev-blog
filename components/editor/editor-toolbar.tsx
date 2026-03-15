@@ -10,6 +10,7 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  ImagePlus,
   Italic,
   Link2,
   List,
@@ -36,21 +37,15 @@ interface ToolbarAction {
 interface EditorToolbarProps {
   editor: Editor | null;
   onLinkClick: () => void;
+  onImageClick: () => void;
 }
 
-/**
- * EditorToolbar
- *
- * 툴바 액션을 선언적 배열로 관리하여 버튼 추가/삭제
- *
- * 그룹 사이에는 세로 구분선이 자동 삽입된다.
- */
-export function EditorToolbar({ editor, onLinkClick }: EditorToolbarProps) {
+export function EditorToolbar({ editor, onLinkClick, onImageClick }: EditorToolbarProps) {
   if (!editor) {
     return null;
   }
 
-  const groups = createToolbarGroups(editor, onLinkClick);
+  const groups = createToolbarGroups(editor, onLinkClick, onImageClick);
 
   return (
     <Flex alignItems="center" className="flex-wrap gap-0.5 border-b border-input p-1.5">
@@ -69,7 +64,7 @@ export function EditorToolbar({ editor, onLinkClick }: EditorToolbarProps) {
 }
 
 // EditorToolbar에 렌더링할 버튼 그룹과 액션을 반환하는 함수
-function createToolbarGroups(editor: Editor, onLinkClick: () => void): ToolbarAction[][] {
+function createToolbarGroups(editor: Editor, onLinkClick: () => void, onImageClick: () => void): ToolbarAction[][] {
   return [
     /* 제목 */
     [
@@ -158,6 +153,7 @@ function createToolbarGroups(editor: Editor, onLinkClick: () => void): ToolbarAc
         isActive: editor.isActive('codeBlock'),
       },
       { key: 'hr', title: '구분선', icon: Minus, action: () => editor.chain().focus().setHorizontalRule().run() },
+      { key: 'image', title: '이미지 삽입', icon: ImagePlus, action: onImageClick },
     ],
   ];
 }

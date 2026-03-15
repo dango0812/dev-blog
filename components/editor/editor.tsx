@@ -14,7 +14,10 @@ import { common, createLowlight } from 'lowlight';
 import { cn } from '@/lib/tailwind';
 
 import { EditorToolbar } from './editor-toolbar';
+import { useEditorImage } from './use-editor-image';
 import { useEditorLink } from './use-editor-link';
+
+import 'highlight.js/styles/atom-one-dark.css';
 
 const lowlight = createLowlight(common);
 
@@ -73,6 +76,7 @@ export function Editor({ value = '', onChange, onBlur, placeholder = '내용을 
   });
 
   const handleLink = useEditorLink(editor);
+  const { inputRef, handleImageClick, handleFileChange } = useEditorImage(editor);
 
   return (
     <div
@@ -82,7 +86,8 @@ focus-within:ring-ring/50`,
         className,
       )}
     >
-      <EditorToolbar editor={editor} onLinkClick={handleLink} />
+      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+      <EditorToolbar editor={editor} onLinkClick={handleLink} onImageClick={handleImageClick} />
       <EditorContent editor={editor} className={PROSE_CLASSES} />
     </div>
   );
