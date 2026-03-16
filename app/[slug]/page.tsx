@@ -1,42 +1,47 @@
 import { Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
+import { unstable_cache } from 'next/cache';
 import { notFound } from 'next/navigation';
 
 import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
-import { sanitizeHtml } from '@/lib/dompurify';
 import { env } from '@/lib/env';
 import db from '@/lib/neon-database';
-import { cn } from '@/lib/tailwind';
 import type { Post } from '@/types';
 import { formatDateKor } from '@/utils/date/format-date';
 import { getArticleSchema } from '@/utils/metadata/article-schema';
 import { generatePostDescription } from '@/utils/metadata/generate-post-description';
+
+import { PostContent } from './_components/post-content';
 
 interface PostDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
 // https://nextjs.org/docs/app/getting-started/fetching-data
-async function getPost(slug: string): Promise<Post | null> {
-  try {
-    const rows = (await db`
-      SELECT
-        id, slug, title, type, tag, content,
-        cover_url  AS "coverUrl",
-        created_at AS "createdAt",
-        updated_at AS "updatedAt"
-      FROM posts
-      WHERE slug = ${slug}
-    `) as Post[];
+// 캐싱과 재검증을 활용하여 데이터베이스 조회 최적화
+const getPost = unstable_cache(
+  async (slug: string): Promise<Post | null> => {
+    try {
+      const rows = (await db`
+        SELECT
+          id, slug, title, type, tag, content,
+          cover_url  AS "coverUrl",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM posts
+        WHERE slug = ${slug}
+      `) as Post[];
 
-    return rows[0] ?? null;
-  } catch {
-    return null;
-  }
-}
-
+      return rows[0] ?? null;
+    } catch {
+      return null;
+    }
+  },
+  ['post-detail'],
+  { tags: ['posts'], revalidate: 3600 },
+);
 export async function generateMetadata({ params }: PostDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
@@ -99,22 +104,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
           </Flex>
         </Flex>
 
-        <article
-          className={cn(
-            'prose max-w-none prose-neutral dark:prose-invert',
-            'prose-headings:font-bold prose-headings:tracking-tight',
-            'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',
-            `prose-code:rounded-md prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm
-prose-code:font-normal prose-code:before:content-none prose-code:after:content-none`,
-            'prose-pre:overflow-x-auto prose-pre:rounded-xl prose-pre:p-0',
-            'prose-img:rounded-xl prose-img:shadow-md',
-            '[&_table]:w-full [&_table]:table-fixed [&_table]:border-collapse',
-            `[&_th]:border [&_th]:border-border [&_th]:bg-muted [&_th]:px-3 [&_th]:py-2 [&_th]:text-left
-[&_th]:font-semibold`,
-            '[&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 [&_td]:align-top',
-          )}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
-        />
+        <PostContent content={post.content} />
 
         <Utterances />
       </Container>
