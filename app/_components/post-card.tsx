@@ -40,8 +40,8 @@ export function PostCard({ post }: PostCardProps) {
         <Flex direction="column" className="mt-3 gap-2">
           <Badge
             className={cn('px-2 py-2.5 text-sm', {
-              'bg-blue-100 text-blue-500': post.type === POST_TYPES[0],
-              'bg-orange-100 text-orange-600': post.type === POST_TYPES[1],
+              'bg-blue-100 text-blue-500': post.type === 'tech',
+              'bg-orange-100 text-orange-600': post.type === 'insight',
             })}
           >
             {post.type}

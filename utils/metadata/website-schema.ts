@@ -28,7 +28,7 @@ export function getWebSiteSchema() {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${BASE_URL}/tag?q={search_term_string}`,
+        urlTemplate: `${BASE_URL}/?tag={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },

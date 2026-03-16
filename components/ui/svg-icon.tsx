@@ -8,13 +8,14 @@ type IconProps = Omit<ComponentProps<'img'>, 'src'> & {
 
 const EMPTY_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E`;
 
-export default function SvgIcon({ src, width, height, style, className, ...props }: IconProps) {
+export default function SvgIcon({ src, alt = '', width, height, style, className, ...props }: IconProps) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       width={width ?? src.width}
       height={height ?? src.height}
       src={EMPTY_SVG} // 실제 이미지는 mask로 띄우므로 src는 비워둠
+      alt={alt}
       className={className}
       style={{
         ...style,

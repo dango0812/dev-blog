@@ -14,30 +14,16 @@ export async function GET(request: Request) {
   const tag = searchParams.get('tag');
 
   try {
-    let rows: Post[];
-
-    if (tag) {
-      rows = (await db`
-        SELECT
-          id, slug, title, type, tag, content,
-          cover_url  AS "coverUrl",
-          created_at AS "createdAt",
-          updated_at AS "updatedAt"
-        FROM posts
-        WHERE tag = ${tag}
-        ORDER BY created_at DESC
-      `) as Post[];
-    } else {
-      rows = (await db`
-        SELECT
-          id, slug, title, type, tag, content,
-          cover_url  AS "coverUrl",
-          created_at AS "createdAt",
-          updated_at AS "updatedAt"
-        FROM posts
-        ORDER BY created_at DESC
-      `) as Post[];
-    }
+    const rows = (await db`
+      SELECT
+        id, slug, title, type, tag, content,
+        cover_url  AS "coverUrl",
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+      FROM posts
+      ${tag ? db`WHERE tag = ${tag}` : db``}
+      ORDER BY created_at DESC
+    `) as Post[];
 
     return NextResponse.json(rows ?? [], { status: 200 });
   } catch {
