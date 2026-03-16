@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { EmptyContent } from '@/components/EmptyContent';
+import { EmptyContent } from '@/components/empty-content';
 import { Flex } from '@/components/ui';
 import { API_ROUTES } from '@/constants';
 import type { Post } from '@/types';
