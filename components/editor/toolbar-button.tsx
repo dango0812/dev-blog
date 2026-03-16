@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/tailwind';
@@ -15,6 +15,11 @@ interface ToolbarButtonProps {
 
 /** 에디터 툴바 내 개별 아이콘 버튼 */
 export function ToolbarButton({ title, isActive, disabled, onClick, children }: ToolbarButtonProps) {
+  const handleMouseDown = (e: MouseEvent) => {
+    e.preventDefault();
+    onClick();
+  };
+
   return (
     <Button
       type="button"
@@ -25,7 +30,7 @@ export function ToolbarButton({ title, isActive, disabled, onClick, children }: 
       aria-label={title}
       aria-pressed={isActive ?? false}
       className={cn(isActive && 'bg-muted text-foreground')}
-      onClick={onClick}
+      onMouseDown={handleMouseDown}
     >
       {children}
     </Button>
