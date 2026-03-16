@@ -6,6 +6,7 @@ import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
 import { API_ROUTES } from '@/constants';
+import { sanitizeHtml } from '@/lib/dompurify';
 import { env } from '@/lib/env';
 import { cn } from '@/lib/tailwind';
 import type { Post } from '@/types';
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
       type: 'article',
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt,
-      tags: [post.tag],
+      tags: post.tag,
       ...(post.coverUrl && {
         images: [{ url: post.coverUrl, width: 1200, height: 630, alt: post.title }],
       }),
@@ -107,7 +108,7 @@ prose-code:font-normal prose-code:before:content-none prose-code:after:content-n
 [&_th]:font-semibold`,
             '[&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 [&_td]:align-top',
           )}
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
         />
 
         <Utterances />

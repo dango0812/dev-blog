@@ -20,8 +20,7 @@ export function getArticleSchema(post: Post) {
     headline: post.title,
     description: generatePostDescription(post.content),
     articleSection: post.type,
-    // 키워드가 배열일 경우 문자열로 합침
-    keywords: Array.isArray(post.tag) ? post.tag.join(', ') : post.tag,
+    keywords: post.tag,
 
     url: postUrl,
     datePublished,
