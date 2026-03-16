@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Badge, Flex, Text } from '@/components/ui';
-import { PATHS, POST_TYPES } from '@/constants';
+import { PATHS } from '@/constants';
 import { cn } from '@/lib/tailwind';
 import type { Post } from '@/types';
 import { formatDate } from '@/utils';
