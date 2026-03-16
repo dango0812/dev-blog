@@ -52,10 +52,6 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
     script.async = true;
 
     container.appendChild(script);
-
-    return () => {
-      container.innerHTML = '';
-    };
   }, [issueTerm]);
 
   useEffect(() => {
@@ -69,5 +65,5 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
     iframe.contentWindow.postMessage({ type: 'set-theme', theme: utterancesTheme }, UTTERANCES_ORIGIN);
   }, [utterancesTheme]);
 
-  return <div ref={containerRef} className="mt-10" />;
+  return <div ref={containerRef} className="mt-10 min-h-60" />;
 }
