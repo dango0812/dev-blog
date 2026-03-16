@@ -1,6 +1,5 @@
 import { Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
-import { unstable_cache } from 'next/cache';
 import { notFound } from 'next/navigation';
 
 import { SchemaScript } from '@/components/schema-script';
@@ -20,28 +19,24 @@ interface PostDetailPageProps {
 }
 
 // https://nextjs.org/docs/app/getting-started/fetching-data
-// 캐싱과 재검증을 활용하여 데이터베이스 조회 최적화
-const getPost = unstable_cache(
-  async (slug: string): Promise<Post | null> => {
-    try {
-      const rows = (await db`
-        SELECT
-          id, slug, title, type, tag, content,
-          cover_url  AS "coverUrl",
-          created_at AS "createdAt",
-          updated_at AS "updatedAt"
-        FROM posts
-        WHERE slug = ${slug}
-      `) as Post[];
+async function getPost(slug: string): Promise<Post | null> {
+  try {
+    const rows = (await db`
+      SELECT
+        id, slug, title, type, tag, content,
+        cover_url  AS "coverUrl",
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+      FROM posts
+      WHERE slug = ${slug}
+    `) as Post[];
 
-      return rows[0] ?? null;
-    } catch {
-      return null;
-    }
-  },
-  ['post-detail'],
-  { tags: ['posts'], revalidate: 3600 },
-);
+    return rows[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }: PostDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
