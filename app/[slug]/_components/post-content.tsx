@@ -1,5 +1,3 @@
-'use client';
-
 import parse from 'html-react-parser';
 
 import { sanitizeHtml } from '@/lib/dompurify';
