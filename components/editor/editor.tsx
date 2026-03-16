@@ -21,8 +21,6 @@ import { EditorToolbar } from './editor-toolbar';
 import { useEditorImage } from './use-editor-image';
 import { useEditorLink } from './use-editor-link';
 
-import 'highlight.js/styles/atom-one-dark.css';
-
 const lowlight = createLowlight(common);
 
 const STATIC_EXTENSIONS = [

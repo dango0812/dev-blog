@@ -18,6 +18,7 @@ export const API_ROUTES = {
   POSTS: {
     LIST: '/api/posts',
     CREATE: '/api/posts',
+    DETAIL: (slug: string) => `/api/posts/${slug}`,
   },
 } as const;
 

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: {
     default: SITE_CONFIG.name,
-    template: `%s | ${SITE_CONFIG.shortName}`,
+    template: '%s',
   },
   description: SITE_CONFIG.description,
   openGraph: {
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <SchemaScript schema={getWebSiteSchema()} />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Header />
-          {children}
+          <main>{children}</main>
           <Toaster richColors position="top-center" />
         </ThemeProvider>
       </body>

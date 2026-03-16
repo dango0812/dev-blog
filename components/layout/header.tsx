@@ -17,11 +17,11 @@ export function Header() {
   };
 
   return (
-    <Flex as="header" alignItems="center" className="border-b border-border bg-background">
+    <Flex as="header" alignItems="center" className="sticky top-0 z-50 border-b border-border bg-background">
       <Container maxWidth="lg" className="px-6 py-4">
         <Flex justifyContent="space-between" alignItems="center">
           <Link href={PATHS.HOME}>
-            <Text as="h1" className="text-lg font-bold tracking-tight">
+            <Text as="span" className="text-lg font-bold tracking-tight">
               Donggyu
             </Text>
           </Link>
