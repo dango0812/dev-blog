@@ -5,9 +5,9 @@ import { notFound } from 'next/navigation';
 import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
-import { API_ROUTES } from '@/constants';
 import { sanitizeHtml } from '@/lib/dompurify';
 import { env } from '@/lib/env';
+import db from '@/lib/neon-database';
 import { cn } from '@/lib/tailwind';
 import type { Post } from '@/types';
 import { formatDateKor } from '@/utils/date/format-date';
@@ -18,15 +18,20 @@ interface PostDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// https://nextjs.org/docs/app/getting-started/fetching-data
 async function getPost(slug: string): Promise<Post | null> {
   try {
-    const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}${API_ROUTES.POSTS.DETAIL(slug)}`);
+    const rows = (await db`
+      SELECT
+        id, slug, title, type, tag, content,
+        cover_url  AS "coverUrl",
+        created_at AS "createdAt",
+        updated_at AS "updatedAt"
+      FROM posts
+      WHERE slug = ${slug}
+    `) as Post[];
 
-    if (!res.ok) {
-      return null;
-    }
-
-    return (await res.json()) as Post;
+    return rows[0] ?? null;
   } catch {
     return null;
   }
