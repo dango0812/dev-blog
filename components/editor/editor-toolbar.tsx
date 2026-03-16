@@ -19,6 +19,12 @@ import {
   Minus,
   Quote,
   Strikethrough,
+  Table,
+  TableCellsMerge,
+  TableCellsSplit,
+  TableColumnsSplit,
+  TableRowsSplit,
+  Trash2,
 } from 'lucide-react';
 
 import { Flex, Separator } from '@/components/ui';
@@ -154,6 +160,51 @@ function createToolbarGroups(editor: Editor, onLinkClick: () => void, onImageCli
       },
       { key: 'hr', title: '구분선', icon: Minus, action: () => editor.chain().focus().setHorizontalRule().run() },
       { key: 'image', title: '이미지 삽입', icon: ImagePlus, action: onImageClick },
+    ],
+    /* 표 */
+    [
+      {
+        key: 'insertTable',
+        title: '표 삽입',
+        icon: Table,
+        action: () => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+        disabled: !editor.can().insertTable(),
+      },
+      {
+        key: 'addColumnAfter',
+        title: '열 추가',
+        icon: TableColumnsSplit,
+        action: () => editor.chain().focus().addColumnAfter().run(),
+        disabled: !editor.can().addColumnAfter(),
+      },
+      {
+        key: 'addRowAfter',
+        title: '행 추가',
+        icon: TableRowsSplit,
+        action: () => editor.chain().focus().addRowAfter().run(),
+        disabled: !editor.can().addRowAfter(),
+      },
+      {
+        key: 'mergeCells',
+        title: '셀 병합',
+        icon: TableCellsMerge,
+        action: () => editor.chain().focus().mergeCells().run(),
+        disabled: !editor.can().mergeCells(),
+      },
+      {
+        key: 'splitCell',
+        title: '셀 분할',
+        icon: TableCellsSplit,
+        action: () => editor.chain().focus().splitCell().run(),
+        disabled: !editor.can().splitCell(),
+      },
+      {
+        key: 'deleteTable',
+        title: '표 삭제',
+        icon: Trash2,
+        action: () => editor.chain().focus().deleteTable().run(),
+        disabled: !editor.can().deleteTable(),
+      },
     ],
   ];
 }

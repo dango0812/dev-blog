@@ -6,6 +6,10 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import ImageExtension from '@tiptap/extension-image';
 import LinkExtension from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+import { Table as TableExtension } from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
 import Typography from '@tiptap/extension-typography';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -27,6 +31,10 @@ const STATIC_EXTENSIONS = [
   ImageExtension,
   LinkExtension.configure({ openOnClick: false }),
   Typography,
+  TableExtension.configure({ resizable: false }),
+  TableRow,
+  TableHeader,
+  TableCell,
 ];
 
 // ProseMirror 에디터 영역 Tailwind 스타일
@@ -39,6 +47,12 @@ const PROSE_CLASSES = cn(
   '[&_.ProseMirror_p.is-editor-empty:first-child::before]:h-0',
   '[&_.ProseMirror_p.is-editor-empty:first-child::before]:text-muted-foreground',
   '[&_.ProseMirror_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]',
+  '[&_.ProseMirror_table]:w-full [&_.ProseMirror_table]:table-fixed [&_.ProseMirror_table]:border-collapse',
+  `[&_.ProseMirror_th]:border [&_.ProseMirror_th]:border-border [&_.ProseMirror_th]:bg-muted [&_.ProseMirror_th]:px-3
+[&_.ProseMirror_th]:py-2 [&_.ProseMirror_th]:text-left [&_.ProseMirror_th]:font-semibold`,
+  `[&_.ProseMirror_td]:border [&_.ProseMirror_td]:border-border [&_.ProseMirror_td]:px-3 [&_.ProseMirror_td]:py-2
+[&_.ProseMirror_td]:align-top`,
+  '[&_.ProseMirror_.selectedCell]:bg-primary/10',
 );
 
 interface EditorProps {
