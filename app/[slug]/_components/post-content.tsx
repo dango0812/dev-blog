@@ -1,5 +1,7 @@
 'use client';
 
+import parse from 'html-react-parser';
+
 import { sanitizeHtml } from '@/lib/dompurify';
 import { cn } from '@/lib/tailwind';
 
@@ -19,7 +21,8 @@ prose-code:font-normal prose-code:before:content-none prose-code:after:content-n
 [&_th]:font-semibold`,
         '[&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 [&_td]:align-top',
       )}
-      dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
-    />
+    >
+      {parse(sanitizeHtml(content))}
+    </article>
   );
 }
