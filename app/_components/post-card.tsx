@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Badge, Flex, Text } from '@/components/ui';
-import { PATHS } from '@/constants';
 import { cn } from '@/lib/tailwind';
 import type { Post } from '@/types';
 import { formatDate } from '@/utils';
@@ -14,7 +13,7 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Link href={`${PATHS.POSTS}/${post.slug}`} className="group">
+    <Link href={`/${post.slug}`} className="group">
       <article>
         <div className="relative aspect-16/10 overflow-hidden rounded-xl bg-muted">
           {post.coverUrl ? (
