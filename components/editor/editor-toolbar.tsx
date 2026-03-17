@@ -7,7 +7,6 @@ import {
   Bold,
   Code,
   Code2,
-  Heading1,
   Heading2,
   Heading3,
   ImagePlus,
@@ -17,6 +16,7 @@ import {
   ListOrdered,
   type LucideIcon,
   Minus,
+  MonitorPlay,
   Quote,
   Strikethrough,
   Table,
@@ -24,7 +24,6 @@ import {
   TableCellsSplit,
   TableColumnsSplit,
   TableRowsSplit,
-  Trash2,
 } from 'lucide-react';
 
 import { Flex, Separator } from '@/components/ui';
@@ -44,14 +43,15 @@ interface EditorToolbarProps {
   editor: Editor | null;
   onLinkClick: () => void;
   onImageClick: () => void;
+  onIframeClick: () => void;
 }
 
-export function EditorToolbar({ editor, onLinkClick, onImageClick }: EditorToolbarProps) {
+export function EditorToolbar({ editor, onLinkClick, onImageClick, onIframeClick }: EditorToolbarProps) {
   if (!editor) {
     return null;
   }
 
-  const groups = createToolbarGroups(editor, onLinkClick, onImageClick);
+  const groups = createToolbarGroups(editor, onLinkClick, onImageClick, onIframeClick);
 
   return (
     <Flex alignItems="center" className="flex-wrap gap-0.5 border-b border-input p-1.5">
@@ -70,17 +70,15 @@ export function EditorToolbar({ editor, onLinkClick, onImageClick }: EditorToolb
 }
 
 // EditorToolbar에 렌더링할 버튼 그룹과 액션을 반환하는 함수
-function createToolbarGroups(editor: Editor, onLinkClick: () => void, onImageClick: () => void): ToolbarAction[][] {
+function createToolbarGroups(
+  editor: Editor,
+  onLinkClick: () => void,
+  onImageClick: () => void,
+  onIframeClick: () => void,
+): ToolbarAction[][] {
   return [
     /* 제목 */
     [
-      {
-        key: 'h1',
-        title: '제목 1',
-        icon: Heading1,
-        action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-        isActive: editor.isActive('heading', { level: 1 }),
-      },
       {
         key: 'h2',
         title: '제목 2',
@@ -160,6 +158,7 @@ function createToolbarGroups(editor: Editor, onLinkClick: () => void, onImageCli
       },
       { key: 'hr', title: '구분선', icon: Minus, action: () => editor.chain().focus().setHorizontalRule().run() },
       { key: 'image', title: '이미지 삽입', icon: ImagePlus, action: onImageClick },
+      { key: 'iframe', title: 'iframe 삽입', icon: MonitorPlay, action: onIframeClick },
     ],
     /* 표 */
     [
@@ -197,13 +196,6 @@ function createToolbarGroups(editor: Editor, onLinkClick: () => void, onImageCli
         icon: TableCellsSplit,
         action: () => editor.chain().focus().splitCell().run(),
         disabled: !editor.can().splitCell(),
-      },
-      {
-        key: 'deleteTable',
-        title: '표 삭제',
-        icon: Trash2,
-        action: () => editor.chain().focus().deleteTable().run(),
-        disabled: !editor.can().deleteTable(),
       },
     ],
   ];
