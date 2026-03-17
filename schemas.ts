@@ -2,9 +2,23 @@ import { z } from 'zod';
 
 import { POST_TAGS, POST_TYPES } from '@/constants';
 
-/**
- * 게시글 작성/수정 폼 스키마
- */
+/** 날짜 필드 (Date → ISO 문자열 변환) */
+const dateString = z.preprocess(val => (val instanceof Date ? val.toISOString() : val), z.string());
+
+/** DB 응답 게시글 스키마 */
+export const postSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  title: z.string(),
+  type: z.string(),
+  tag: z.string(),
+  content: z.string(),
+  coverUrl: z.string().nullable(),
+  createdAt: dateString,
+  updatedAt: dateString,
+});
+
+/** 게시글 작성/수정 폼 스키마 */
 export const postFormSchema = z.object({
   coverUrl: z.url('올바른 이미지 URL을 입력해주세요').nullable(),
   slug: z
@@ -27,3 +41,5 @@ export const postFormSchema = z.object({
 
 /* 게시글 작성/수정 폼 타입 */
 export type PostFormSchema = z.infer<typeof postFormSchema>;
+/** 게시글 타입 */
+export type Post = z.infer<typeof postSchema>;

@@ -4,11 +4,12 @@ import type { PropsWithChildren } from 'react';
 import { Toaster } from 'sonner';
 
 import { Header } from '@/components/layout/header';
-import { ThemeProvider } from '@/components/providers/theme-provider';
 import { SchemaScript } from '@/components/schema-script';
 import { OPEN_GRAPH_URL, SITE_CONFIG } from '@/constants';
 import { env } from '@/lib/env';
 import { getWebSiteSchema } from '@/utils/metadata/website-schema';
+
+import { Providers } from './providers';
 
 import './globals.css';
 
@@ -66,11 +67,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="ko" className={notoSansKR.variable} suppressHydrationWarning>
       <body>
         <SchemaScript schema={getWebSiteSchema()} />
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <Providers>
           <Header />
           <main>{children}</main>
           <Toaster richColors position="top-center" />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

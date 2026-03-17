@@ -1,9 +1,8 @@
 import { NeonDbError } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 
-import db from '@/lib/neon-database';
 import { postFormSchema } from '@/schemas';
-import type { Post } from '@/types';
+import { getPostBySlug, updatePost } from '@/services/post';
 
 interface PostDetailRequestContext {
   params: Promise<{ slug: string }>;
@@ -18,17 +17,7 @@ export async function GET(_request: Request, { params }: PostDetailRequestContex
   const { slug } = await params;
 
   try {
-    const rows = (await db`
-      SELECT
-        id, slug, title, type, tag, content,
-        cover_url  AS "coverUrl",
-        created_at AS "createdAt",
-        updated_at AS "updatedAt"
-      FROM posts
-      WHERE slug = ${slug}
-    `) as Post[];
-
-    const post = rows[0];
+    const post = await getPostBySlug(slug);
 
     if (!post) {
       return NextResponse.json({ error: '게시글을 찾지 못했어요' }, { status: 404 });
@@ -50,39 +39,13 @@ export async function PATCH(request: Request, { params }: PostDetailRequestConte
 
   const result = postFormSchema.safeParse((await request.json()) ?? {});
 
-  // request body가 유효하지 않을 때
   if (!result.success) {
     const message = result.error.issues[0]?.message ?? '유효하지 않은 데이터예요';
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { slug: newSlug, title, type, tag, content, coverUrl } = result.data;
-
   try {
-    const rows = (await db`
-      UPDATE posts
-      SET
-        slug       = ${newSlug},
-        title      = ${title},
-        type       = ${type},
-        tag        = ${tag},
-        content    = ${content},
-        cover_url  = ${coverUrl},
-        updated_at = NOW()
-      WHERE slug = ${slug}
-      RETURNING
-        id,
-        slug,
-        title,
-        type,
-        tag,
-        content,
-        cover_url   AS "coverUrl",
-        created_at  AS "createdAt",
-        updated_at  AS "updatedAt"
-    `) as Post[];
-
-    const post = rows[0];
+    const post = await updatePost(slug, result.data);
 
     if (!post) {
       return NextResponse.json({ error: '게시글을 찾지 못했어요' }, { status: 404 });

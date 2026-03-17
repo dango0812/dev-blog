@@ -6,8 +6,7 @@ import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
 import { env } from '@/lib/env';
-import db from '@/lib/neon-database';
-import type { Post } from '@/types';
+import { getPostBySlug } from '@/services/post';
 import { formatDateKor } from '@/utils/date/format-date';
 import { getArticleSchema } from '@/utils/metadata/article-schema';
 import { generatePostDescription } from '@/utils/metadata/generate-post-description';
@@ -18,28 +17,9 @@ interface PostDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// https://nextjs.org/docs/app/getting-started/fetching-data
-async function getPost(slug: string): Promise<Post | null> {
-  try {
-    const rows = (await db`
-      SELECT
-        id, slug, title, type, tag, content,
-        cover_url  AS "coverUrl",
-        created_at AS "createdAt",
-        updated_at AS "updatedAt"
-      FROM posts
-      WHERE slug = ${slug}
-    `) as Post[];
-
-    return rows[0] ?? null;
-  } catch {
-    return null;
-  }
-}
-
 export async function generateMetadata({ params }: PostDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return notFound();
@@ -69,7 +49,7 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
 
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();

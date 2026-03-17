@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Badge, Flex, Text } from '@/components/ui';
 import { PATHS } from '@/constants';
 import { cn } from '@/lib/tailwind';
-import type { Post } from '@/types';
+import type { Post } from '@/services/post';
 import { formatDate } from '@/utils';
 
 interface PostCardProps {

@@ -1,6 +1,6 @@
 import { GITHUB_URL, SITE_CONFIG } from '@/constants';
 import { env } from '@/lib/env';
-import type { Post } from '@/types';
+import type { Post } from '@/services/post';
 import { generatePostDescription } from '@/utils/metadata/generate-post-description';
 
 const BASE_URL = env.NEXT_PUBLIC_APP_URL;
