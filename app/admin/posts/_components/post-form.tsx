@@ -53,11 +53,9 @@ export function PostForm({ initialData }: PostFormProps) {
       });
 
       if (!res.ok) {
-        if (!res.ok) {
-          const { error } = (await res.json()) as { error: string };
-          toast.error(error);
-          return;
-        }
+        const { error } = (await res.json()) as { error: string };
+        toast.error(error);
+        return;
       }
 
       const successMsg = isEditMode ? '게시글이 성공적으로 수정되었어요' : '게시글이 성공적으로 생성되었어요';
