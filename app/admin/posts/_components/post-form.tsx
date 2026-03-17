@@ -24,10 +24,16 @@ const defaultValues: PostFormSchema = {
   content: '',
 };
 
-export function PostForm() {
+interface PostFormProps {
+  initialData?: PostFormSchema;
+}
+
+export function PostForm({ initialData }: PostFormProps) {
+  const isEditMode = Boolean(initialData);
+
   const methods = useForm<PostFormSchema>({
     resolver: zodResolver(postFormSchema),
-    defaultValues,
+    defaultValues: initialData ?? defaultValues,
   });
 
   const {
@@ -37,19 +43,25 @@ export function PostForm() {
 
   const onSubmit: SubmitHandler<PostFormSchema> = async data => {
     try {
-      const res = await fetch(API_ROUTES.POSTS.CREATE, {
-        method: 'POST',
+      const url = isEditMode ? API_ROUTES.POSTS.UPDATE(initialData!.slug) : API_ROUTES.POSTS.CREATE;
+      const method = isEditMode ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
       if (!res.ok) {
-        const { error } = (await res.json()) as { error: string };
-        toast.error(error);
-        return;
+        if (!res.ok) {
+          const { error } = (await res.json()) as { error: string };
+          toast.error(error);
+          return;
+        }
       }
 
-      toast.success('게시글이 성공적으로 생성되었어요');
+      const successMsg = isEditMode ? '게시글이 성공적으로 수정되었어요' : '게시글이 성공적으로 생성되었어요';
+      toast.success(successMsg);
     } catch {
       toast.error('서버 오류가 발생했어요');
     }
@@ -68,7 +80,7 @@ export function PostForm() {
 
           <Flex justifyContent="flex-end">
             <Button type="submit" size="lg" className="h-11 px-5 py-2.5" disabled={isSubmitting}>
-              게시하기
+              {isEditMode ? '수정하기' : '게시하기'}
               {isSubmitting && <Spinner data-icon="inline-start" />}
             </Button>
           </Flex>
