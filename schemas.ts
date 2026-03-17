@@ -41,3 +41,5 @@ export const postFormSchema = z.object({
 
 /* 게시글 작성/수정 폼 타입 */
 export type PostFormSchema = z.infer<typeof postFormSchema>;
+/** 게시글 타입 */
+export type Post = z.infer<typeof postSchema>;

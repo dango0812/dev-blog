@@ -1,21 +1,12 @@
+import { cache } from 'react';
+
 import db from '@/lib/neon-database';
 import { type PostFormSchema, postSchema } from '@/schemas';
 
-/** API 응답에서 사용하는 게시글 타입 */
-export interface Post {
-  id: number;
-  slug: string;
-  title: string;
-  type: string;
-  tag: string;
-  content: string;
-  coverUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { Post } from '@/schemas';
 
-/** slug로 게시글 단건 조회 */
-export async function getPostBySlug(slug: string) {
+/** slug로 게시글 단건 조회 (같은 렌더 패스 내 중복 호출 방지) */
+export const getPostBySlug = cache(async (slug: string) => {
   const rows = await db`
     SELECT
       id, slug, title, type, tag, content,
@@ -31,7 +22,7 @@ export async function getPostBySlug(slug: string) {
   }
 
   return postSchema.parse(rows[0]);
-}
+});
 
 /** 게시글 목록 조회 */
 export async function getPosts(tag?: string | null) {
