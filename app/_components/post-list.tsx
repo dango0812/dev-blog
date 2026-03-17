@@ -1,13 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { useSearchParams } from 'next/navigation';
 
 import { EmptyContent } from '@/components/empty-content';
 import { Flex } from '@/components/ui';
-import { API_ROUTES } from '@/constants';
-import type { Post } from '@/types';
+import { usePosts } from '@/hooks/use-posts';
 
 import { PostCard } from './post-card';
 import { PostListSkeleton } from './post-list-skeleton';
@@ -16,33 +13,13 @@ export function PostList() {
   const searchParams = useSearchParams();
   const activeTag = searchParams.get('tag');
 
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setIsLoading(true);
-
-      try {
-        const url = activeTag ? `${API_ROUTES.POSTS.LIST}?tag=${encodeURIComponent(activeTag)}` : API_ROUTES.POSTS.LIST;
-
-        const res = await fetch(url);
-        const data = (await res.json()) as Post[];
-
-        setPosts(data);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, [activeTag]);
+  const { data: posts, isLoading } = usePosts({ tag: activeTag });
 
   if (isLoading) {
     return <PostListSkeleton />;
   }
 
-  const isEmpty = posts.length === 0;
+  const isEmpty = !posts || posts.length === 0;
   if (isEmpty) {
     return (
       <Flex alignItems="center" justifyContent="center">
