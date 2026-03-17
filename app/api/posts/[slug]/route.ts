@@ -1,3 +1,4 @@
+import { NeonDbError } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 
 import db from '@/lib/neon-database';
@@ -89,7 +90,7 @@ export async function PATCH(request: Request, { params }: PostDetailRequestConte
 
     return NextResponse.json(post, { status: 200 });
   } catch (err) {
-    if (err instanceof Error && err.message.includes('unique')) {
+    if (err instanceof NeonDbError && err.code === '23505') {
       return NextResponse.json({ error: '이미 사용 중인 슬러그예요' }, { status: 409 });
     }
 
