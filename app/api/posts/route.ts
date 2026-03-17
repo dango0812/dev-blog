@@ -1,9 +1,8 @@
 import { NeonDbError } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 
-import db from '@/lib/neon-database';
 import { postFormSchema } from '@/schemas';
-import type { Post } from '@/types';
+import { createPost, getPosts } from '@/services/post';
 
 /**
  * GET /api/posts
@@ -15,18 +14,8 @@ export async function GET(request: Request) {
   const tag = searchParams.get('tag');
 
   try {
-    const rows = (await db`
-      SELECT
-        id, slug, title, type, tag, content,
-        cover_url  AS "coverUrl",
-        created_at AS "createdAt",
-        updated_at AS "updatedAt"
-      FROM posts
-      ${tag ? db`WHERE tag = ${tag}` : db``}
-      ORDER BY created_at DESC
-    `) as Post[];
-
-    return NextResponse.json(rows ?? [], { status: 200 });
+    const posts = await getPosts(tag);
+    return NextResponse.json(posts, { status: 200 });
   } catch {
     return NextResponse.json({ error: '게시글을 불러오지 못했어요' }, { status: 500 });
   }
@@ -53,25 +42,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { slug, title, type, tag, content, coverUrl } = result.data;
-
   try {
-    const rows = await db`
-      INSERT INTO posts (slug, title, type, tag, content, cover_url)
-      VALUES (${slug}, ${title}, ${type}, ${tag}, ${content}, ${coverUrl})
-      RETURNING
-        id,
-        slug,
-        title,
-        type,
-        tag,
-        content,
-        cover_url   AS "coverUrl",
-        created_at  AS "createdAt",
-        updated_at  AS "updatedAt"
-    `;
-
-    return NextResponse.json(rows[0] as Post, { status: 201 });
+    const post = await createPost(result.data);
+    return NextResponse.json(post, { status: 201 });
   } catch (err) {
     if (err instanceof NeonDbError && err.code === '23505') {
       return NextResponse.json({ error: '이미 사용 중인 슬러그예요' }, { status: 409 });

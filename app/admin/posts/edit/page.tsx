@@ -2,9 +2,8 @@ import { notFound } from 'next/navigation';
 
 import { Text } from '@/components/ui';
 import { Container } from '@/components/ui/container';
-import db from '@/lib/neon-database';
 import type { PostFormSchema } from '@/schemas';
-import type { Post } from '@/types';
+import { getPostBySlug } from '@/services/post';
 
 import { PostForm } from '../_components/post-form';
 
@@ -26,17 +25,7 @@ export default async function EditPostPage({ searchParams }: EditPostPageProps) 
     notFound();
   }
 
-  const rows = (await db`
-    SELECT
-      id, slug, title, type, tag, content,
-      cover_url  AS "coverUrl",
-      created_at AS "createdAt",
-      updated_at AS "updatedAt"
-    FROM posts
-    WHERE slug = ${slug}
-  `) as Post[];
-
-  const post = rows[0];
+  const post = await getPostBySlug(slug);
   if (!post) {
     notFound();
   }
