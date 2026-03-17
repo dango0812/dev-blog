@@ -15,6 +15,7 @@ export function sanitizeHtml(html: string): string {
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
       'p',
+      'span',
       'h1',
       'h2',
       'h3',
@@ -27,10 +28,12 @@ export function sanitizeHtml(html: string): string {
       'a',
       'strong',
       'em',
+      's',
       'code',
       'pre',
       'blockquote',
       'img',
+      'iframe',
       'table',
       'thead',
       'tbody',
@@ -38,6 +41,6 @@ export function sanitizeHtml(html: string): string {
       'th',
       'td',
     ],
-    ALLOWED_ATTR: ['href', 'src', 'alt', 'class', 'target', 'rel'],
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'class', 'target', 'rel', 'frameborder', 'allowfullscreen', 'allow'],
   });
 }

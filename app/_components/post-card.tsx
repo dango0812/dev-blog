@@ -44,7 +44,7 @@ export function PostCard({ post }: PostCardProps) {
               'bg-orange-100 text-orange-600': post.type === 'insight',
             })}
           >
-            {post.type}
+            {post.tag}
           </Badge>
 
           <Flex direction="column" className="gap-1">
