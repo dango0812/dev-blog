@@ -23,7 +23,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.2",
     "@t3-oss/env-nextjs": "^0.13.10",
-    "@tiptap/core": "^3.20.1",
+    "@tiptap/core": "3.20.1",
     "@tiptap/extension-code-block-lowlight": "^3.20.1",
     "@tiptap/extension-image": "^3.20.1",
     "@tiptap/extension-link": "^3.20.1",
@@ -85,7 +85,8 @@
   "pnpm": {
     "overrides": {
       "jsdom": "25.0.1",
-      "jsdom>parse5": "7.3.0"
+      "jsdom>parse5": "7.3.0",
+      "@tiptap/core": "3.20.1"
     }
   }
 }
