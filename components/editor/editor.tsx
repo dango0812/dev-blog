@@ -2,42 +2,20 @@
 
 import { useEffect, useRef } from 'react';
 
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import ImageExtension from '@tiptap/extension-image';
-import LinkExtension from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Table as TableExtension } from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
-import Typography from '@tiptap/extension-typography';
 import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { common, createLowlight } from 'lowlight';
 
 import { cn } from '@/lib/tailwind';
 
+import { STATIC_EXTENSIONS } from './config';
 import { EditorToolbar } from './editor-toolbar';
+import { useEditorIframe } from './use-editor-iframe';
 import { useEditorImage } from './use-editor-image';
 import { useEditorLink } from './use-editor-link';
 
-const lowlight = createLowlight(common);
-
-const STATIC_EXTENSIONS = [
-  StarterKit.configure({ codeBlock: false }),
-  CodeBlockLowlight.configure({ lowlight }),
-  ImageExtension,
-  LinkExtension.configure({ openOnClick: false }),
-  Typography,
-  TableExtension.configure({ resizable: false }),
-  TableRow,
-  TableHeader,
-  TableCell,
-];
-
 // ProseMirror 에디터 영역 Tailwind 스타일
 const PROSE_CLASSES = cn(
-  'prose prose-sm max-w-none px-4 py-3 dark:prose-invert',
+  'prose prose-sm max-w-none flex-1 overflow-y-auto px-4 py-3 dark:prose-invert',
   'prose-h1:hidden',
   'prose-p:my-2',
   'prose-li:my-0 prose-li:text-foreground [&_.ProseMirror_li::marker]:text-foreground',
@@ -93,17 +71,23 @@ export function Editor({ value = '', onChange, onBlur, placeholder = '내용을 
 
   const handleLink = useEditorLink(editor);
   const { inputRef, handleImageClick, handleFileChange } = useEditorImage(editor);
+  const handleIframeClick = useEditorIframe(editor);
 
   return (
     <div
       className={cn(
-        `rounded-lg border border-input transition-colors focus-within:border-ring focus-within:ring-3
-focus-within:ring-ring/50`,
+        `flex max-h-[80vh] flex-col rounded-lg border border-input transition-colors focus-within:border-ring
+focus-within:ring-3 focus-within:ring-ring/50`,
         className,
       )}
     >
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-      <EditorToolbar editor={editor} onLinkClick={handleLink} onImageClick={handleImageClick} />
+      <EditorToolbar
+        editor={editor}
+        onLinkClick={handleLink}
+        onImageClick={handleImageClick}
+        onIframeClick={handleIframeClick}
+      />
       <EditorContent editor={editor} className={PROSE_CLASSES} />
     </div>
   );
