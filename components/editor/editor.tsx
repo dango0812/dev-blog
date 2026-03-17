@@ -38,8 +38,12 @@ const STATIC_EXTENSIONS = [
 // ProseMirror 에디터 영역 Tailwind 스타일
 const PROSE_CLASSES = cn(
   'prose prose-sm max-w-none px-4 py-3 dark:prose-invert',
+  'prose-h1:hidden',
+  'prose-p:my-2',
+  'prose-li:my-0 prose-li:text-foreground [&_.ProseMirror_li::marker]:text-foreground',
   '[&_.ProseMirror]:min-h-72',
   '[&_.ProseMirror]:outline-none',
+  '[&_.ProseMirror_p:empty]:min-h-[1em]',
   '[&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none',
   '[&_.ProseMirror_p.is-editor-empty:first-child::before]:float-left',
   '[&_.ProseMirror_p.is-editor-empty:first-child::before]:h-0',

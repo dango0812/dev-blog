@@ -19,6 +19,7 @@ export const API_ROUTES = {
     LIST: '/api/posts',
     CREATE: '/api/posts',
     DETAIL: (slug: string) => `/api/posts/${slug}`,
+    UPDATE: (slug: string) => `/api/posts/${slug}`,
   },
 } as const;
 
@@ -26,6 +27,14 @@ export const API_ROUTES = {
 export const PATHS = {
   HOME: '/',
   POSTS: '/posts',
+  POST_DETAIL: (slug: string) => `/${slug}`,
+
+  ADMIN: {
+    POSTS: {
+      CREATE: '/admin/posts/create',
+      EDIT: (slug: string) => `/admin/posts/edit?slug=${slug}`,
+    },
+  },
 } as const;
 
 /** Github 주소 */

@@ -9,6 +9,10 @@ export function PostContent({ content }: { content: string }) {
       className={cn(
         'prose max-w-none prose-neutral dark:prose-invert',
         'prose-headings:font-bold prose-headings:tracking-tight',
+        'prose-h1:hidden',
+        'prose-p:my-2',
+        'prose-li:my-0 prose-li:text-foreground [&_li::marker]:text-foreground',
+        '[&_p:empty]:min-h-[1em]',
         'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',
         `prose-code:rounded-md prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm
 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none`,
