@@ -19,6 +19,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/posts/2026/nextjs',
+        destination: '/vercel-nextjs-open-source-contribution/',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
