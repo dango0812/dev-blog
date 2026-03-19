@@ -1,9 +1,11 @@
 import { cache } from 'react';
 
 import db from '@/lib/neon-database';
-import { type PostFormSchema, postSchema } from '@/schemas';
 
-export type { Post } from '@/schemas';
+import { type PostFormSchema, postSchema } from './post.schema';
+
+export type { Post, PostFormSchema } from './post.schema';
+export { postFormSchema, postSchema } from './post.schema';
 
 /** slug로 게시글 단건 조회 (같은 렌더 패스 내 중복 호출 방지) */
 export const getPostBySlug = cache(async (slug: string) => {

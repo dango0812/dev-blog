@@ -4,7 +4,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Editor } from '@/components/editor';
 import { Flex, Text } from '@/components/ui';
-import type { PostFormSchema } from '@/schemas';
+import type { PostFormSchema } from '@/services/post.schema';
 
 export function ContentEditor() {
   const { control } = useFormContext<PostFormSchema>();

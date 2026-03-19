@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { Text } from '@/components/ui';
 import { Container } from '@/components/ui/container';
-import type { PostFormSchema } from '@/schemas';
-import { getPostBySlug } from '@/services/post';
+import { getPostBySlug, type PostFormSchema } from '@/services/post';
 
 import { PostForm } from '../_components/post-form';
 

@@ -1,8 +1,7 @@
 import { NeonDbError } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 
-import { postFormSchema } from '@/schemas';
-import { getPostBySlug, updatePost } from '@/services/post';
+import { getPostBySlug, postFormSchema, updatePost } from '@/services/post';
 
 interface PostDetailRequestContext {
   params: Promise<{ slug: string }>;

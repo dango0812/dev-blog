@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { API_ROUTES, QUERY_KEYS } from '@/constants';
-import type { Post } from '@/services/post';
+import type { Post } from '@/services/post.schema';
 
 interface UsePostsParams {
   tag?: string | null;
