@@ -1,4 +1,4 @@
-import { Calendar, Tag } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -59,23 +59,14 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     <>
       <SchemaScript schema={getArticleSchema(post)} />
       <Container maxWidth="md" className="px-6 py-10">
-        <Flex direction="column" className="mb-10 gap-4">
+        <Flex direction="column" className="mb-20 gap-3">
           <Text as="h1" className="text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
             {post.title}
           </Text>
 
-          <Flex alignItems="center" className="gap-4 text-sm text-muted-foreground">
-            <Flex alignItems="center" className="gap-1.5">
-              <Calendar size={14} />
-              <Text as="span">{formatDateKor(post.createdAt)}</Text>
-            </Flex>
-
-            {post.tag && (
-              <Flex alignItems="center" className="gap-1.5">
-                <Tag size={14} />
-                <Text as="span">{post.type}</Text> | <Text as="span">{post.tag}</Text>
-              </Flex>
-            )}
+          <Flex alignItems="center" className="gap-1.5 text-sm text-muted-foreground">
+            <Calendar size={14} />
+            <Text as="span">{formatDateKor(post.createdAt)}</Text>
           </Flex>
         </Flex>
 

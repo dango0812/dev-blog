@@ -22,7 +22,7 @@ export default async function HomePage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Container maxWidth="lg" className="px-6 py-10">
-        <Flex direction="column" className="gap-8">
+        <Flex direction="column" className="gap-5">
           <Suspense fallback={null}>
             <TagFilter />
           </Suspense>

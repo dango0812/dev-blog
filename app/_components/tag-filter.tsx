@@ -31,12 +31,12 @@ export function TagFilter() {
         variant="ghost"
         aria-pressed={!activeTag}
         className={cn(
-          'h-8 shrink-0 rounded-full px-4',
-          !activeTag && 'bg-foreground text-background hover:bg-foreground/90 hover:text-background',
+          'h-8 shrink-0 rounded-full text-xl text-muted-foreground/80',
+          !activeTag && 'bg-transparent font-semibold text-foreground hover:bg-transparent',
         )}
         onClick={() => handleTagClick('all')}
       >
-        전체
+        ALL
       </Button>
 
       {POST_TAGS.map(tag => (
@@ -47,8 +47,8 @@ export function TagFilter() {
           variant="ghost"
           aria-pressed={activeTag === tag}
           className={cn(
-            'h-8 shrink-0 rounded-full px-4',
-            activeTag === tag && 'bg-foreground text-background hover:bg-foreground/90 hover:text-background',
+            'h-8 shrink-0 rounded-full text-xl text-muted-foreground/80',
+            activeTag === tag && 'bg-transparent font-semibold text-foreground hover:bg-transparent',
           )}
           onClick={() => handleTagClick(tag)}
         >
