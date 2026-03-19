@@ -5,6 +5,8 @@ export const PATHS = {
   POST_DETAIL: (slug: string) => `/${slug}`,
 
   ADMIN: {
+    ROOT: '/admin',
+    DASHBOARD: '/admin/dashboard',
     POSTS: {
       CREATE: '/admin/posts/create',
       EDIT: (slug: string) => `/admin/posts/edit?slug=${slug}`,
