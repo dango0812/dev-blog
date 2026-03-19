@@ -17,7 +17,7 @@ export async function getAccessToken(code: string): Promise<string> {
     },
     body: JSON.stringify({
       client_id: env.GITHUB_CLIENT_ID,
-      client_secret: env.GITHUB_SECRET_KEY,
+      client_secret: env.GITHUB_CLIENT_SECRET,
       code,
       redirect_uri: env.GITHUB_REDIRECT_URI,
     }),
