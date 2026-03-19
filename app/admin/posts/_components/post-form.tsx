@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { Button, Flex, Spinner } from '@/components/ui';
 import { API_ROUTES } from '@/constants';
-import { type PostFormSchema, postFormSchema } from '@/schemas';
+import { type PostFormSchema, postFormSchema } from '@/services/post.schema';
 
 import { CategorySelector } from './category-selector';
 import { ContentEditor } from './content-editor';

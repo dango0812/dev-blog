@@ -3,7 +3,7 @@
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Flex, Input, Text } from '@/components/ui';
-import type { PostFormSchema } from '@/schemas';
+import type { PostFormSchema } from '@/services/post.schema';
 
 export function SlugField() {
   const { control } = useFormContext<PostFormSchema>();

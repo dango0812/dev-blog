@@ -10,7 +10,7 @@ import { useController, useFormContext } from 'react-hook-form';
 import { Button, Flex, Text } from '@/components/ui';
 import { API_ROUTES } from '@/constants';
 import { cn } from '@/lib/tailwind';
-import type { PostFormSchema } from '@/schemas';
+import type { PostFormSchema } from '@/services/post.schema';
 
 const ACCEPTED_IMAGE_TYPES = { 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] };
 

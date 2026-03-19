@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { POST_TAGS, POST_TYPES } from '@/constants';
 
-/** 날짜 필드 (Date → ISO 문자열 변환) */
+// 날짜 필드 (Date → ISO 문자열 변환)
 const dateString = z.preprocess(val => (val instanceof Date ? val.toISOString() : val), z.string());
 
 /** DB 응답 게시글 스키마 */
@@ -39,7 +39,8 @@ export const postFormSchema = z.object({
   ),
 });
 
-/* 게시글 작성/수정 폼 타입 */
-export type PostFormSchema = z.infer<typeof postFormSchema>;
 /** 게시글 타입 */
 export type Post = z.infer<typeof postSchema>;
+
+/** 게시글 작성/수정 폼 타입 */
+export type PostFormSchema = z.infer<typeof postFormSchema>;

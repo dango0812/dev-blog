@@ -4,7 +4,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Button, Flex, Text } from '@/components/ui';
 import { POST_TAGS } from '@/constants';
-import type { PostFormSchema } from '@/schemas';
+import type { PostFormSchema } from '@/services/post.schema';
 
 export function TagSelector() {
   const { control } = useFormContext<PostFormSchema>();
