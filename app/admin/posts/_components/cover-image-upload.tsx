@@ -8,16 +8,11 @@ import { useDropzone } from 'react-dropzone';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Button, Flex, Text } from '@/components/ui';
-import { API_ROUTES } from '@/constants';
+import { useUploadImage } from '@/hooks/use-upload-image';
 import { cn } from '@/lib/tailwind';
 import type { PostFormSchema } from '@/services/post.schema';
 
 const ACCEPTED_IMAGE_TYPES = { 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] };
-
-interface UploadResponse {
-  url?: string;
-  error?: string;
-}
 
 /**
  * 커버 이미지 업로드 필드
@@ -33,7 +28,7 @@ export function CoverImageUpload() {
     fieldState: { error },
   } = useController({ name: 'coverUrl', control });
 
-  const [isUploading, setIsUploading] = useState(false);
+  const { mutateAsync: upload, isPending: isUploading } = useUploadImage();
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -42,27 +37,14 @@ export function CoverImageUpload() {
       return;
     }
 
-    setIsUploading(true);
     setUploadError(null);
 
     try {
-      const body = new FormData();
-      body.append('file', file);
-
-      const res = await fetch(API_ROUTES.UPLOAD_IMAGE, { method: 'POST', body });
-      const data = (await res.json()) as UploadResponse;
-
-      if (!res.ok || !data.url) {
-        setUploadError(data.error ?? '업로드에 실패했어요');
-        return;
-      }
-
+      const url = await upload(file);
       // 업로드 성공 시 반환된 URL을 폼 필드에 저장
-      field.onChange(data.url);
-    } catch {
-      setUploadError('업로드 중 오류가 발생했어요');
-    } finally {
-      setIsUploading(false);
+      field.onChange(url);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : '업로드 중 오류가 발생했어요');
     }
   };
 

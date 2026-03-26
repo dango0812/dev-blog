@@ -13,10 +13,18 @@ export function PostList() {
   const searchParams = useSearchParams();
   const activeTag = searchParams.get('tag');
 
-  const { data: posts, isLoading } = usePosts({ tag: activeTag });
+  const { data: posts, isLoading, isError } = usePosts({ tag: activeTag });
 
   if (isLoading) {
     return <PostListSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <Flex alignItems="center" justifyContent="center">
+        <EmptyContent title="게시글을 불러오지 못했어요" />
+      </Flex>
+    );
   }
 
   const isEmpty = !posts || posts.length === 0;
