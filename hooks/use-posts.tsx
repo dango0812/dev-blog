@@ -7,15 +7,23 @@ interface UsePostsParams {
   tag?: string | null;
 }
 
-/** 게시글 목록 조회 */
+/**
+ * 게시글 목록 조회 훅
+ *
+ * @param {UsePostsParams} params - 조회 옵션
+ * @param {string | null} params.tag - 필터링할 태그 (없으면 전체 조회)
+ *
+ * @example
+ * const { data: posts, isLoading } = usePosts({ tag: 'Frontend' });
+ */
 export function usePosts({ tag }: UsePostsParams = {}) {
-  return useQuery({
+  return useQuery<Post[]>({
     queryKey: QUERY_KEYS.post.list(tag),
-    queryFn: () => fetchPosts({ tag }),
+    queryFn: () => fetcherPosts({ tag }),
   });
 }
 
-async function fetchPosts(params: UsePostsParams): Promise<Post[]> {
+async function fetcherPosts(params: UsePostsParams): Promise<Post[]> {
   const searchParams = new URLSearchParams();
 
   if (params.tag) {
