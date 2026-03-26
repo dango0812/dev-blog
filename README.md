@@ -1,51 +1,34 @@
-# blog.dong-gyu.com
+# 개발 블로그
+![cover-main](https://github.com/user-attachments/assets/74a45631-ec3b-4b4b-8c8c-9d693622a39d)
+💡 설계부터 구현까지, 하나씩 만들어가는 나만의 개발 블로그
 
-## 기술 스택
 
-| &nbsp;           | &nbsp;                     |
-| ---------------- | -------------------------- |
-| Framework        | Next.js 16 (App Router)    |
-| Language         | TypeScript                 |
-| Database         | Neon Serverless PostgreSQL |
-| State Management | TanStack Query v5          |
-| Styling          | Tailwind CSS v4            |
-| Validation       | Zod                        |
-| Form             | React Hook Form            |
-| Package Manager  | pnpm                       |
+## 1️⃣ 페이지 소개
+![post-list](https://github.com/user-attachments/assets/e59640ed-a2c2-49a5-a365-60d9ffc5d4f5)
+![post-detail](https://github.com/user-attachments/assets/486c1a34-58ac-4603-8aad-d4aad5dd7a9a)
+![sign-in](https://github.com/user-attachments/assets/b84b1236-be1a-46ba-a017-3dfe9c62c4a0)
+![dashboard](https://github.com/user-attachments/assets/967963cf-d46c-4603-abbb-9d0310fc3797)
+![post-create-edit](https://github.com/user-attachments/assets/09d104bf-045f-485c-9784-3a108ad6584d)
 
----
+## 2️⃣ 기술 스택
+<img width="1999" height="983" alt="tech-stack" src="https://github.com/user-attachments/assets/dad2f802-0774-4214-b65a-4714f0596b99" />
 
-## 프로젝트 구조
+## 3️⃣ 아키텍처
+<img width="2000" height="689" alt="architecture" src="https://github.com/user-attachments/assets/b5c45b56-395c-4853-866a-03c12a77712a" />
 
+## 4️⃣ 프로젝트 구조
 ```
-app/
-├── page.tsx                    # 메인 페이지 (게시글 목록)
-├── [slug]/                     # 게시글 상세 페이지
-├── admin/
-│   ├── page.tsx                # 관리자 로그인
-│   ├── dashboard/              # 관리자 대시보드
-│   └── posts/                  # 게시글 작성/수정
-└── api/
-    ├── auth/                   # GitHub OAuth 콜백
-    ├── upload/                 # Cloudinary 이미지 업로드
-    └── posts/                  # 게시글 CRUD
-
-constants/
-├── auth.ts                     # OAuth
-├── post.ts                     # 게시글
-├── routes.ts                   # API/OAuth 엔드포인트
-├── paths.ts                    # 페이지
-├── site.ts                     # 사이트
-└── query-keys.ts               # TanStack Query Key
-
-services/
-├── auth.schema.ts              # OAuth Zod 스키마
-├── auth.ts                     # OAuth 함수
-├── post.schema.ts              # 게시글 Zod 스키마
-└── post.ts                     # 게시글 DB 쿼리
-
-hooks/
-└── use-posts.tsx               # 게시글 목록 조회 훅
-
-proxy.ts                        # 미들웨어
+📂 DEV-BLOG
+┣ 📂 app/
+┃ ┣ 📂 api/          # 업로드/게시글 CRUD
+┃ ┣ 📂 admin/        # 대시보드/게시글 관리
+┃ ┣ 📂 [slug]/       # 게시글 상세 페이지
+┃ ┗ 📄 page.tsx      # 메인 페이지 (게시글 목록)
+┣ 📂 components/     # 공통 컴포넌트
+┣ 📂 services/       # DB 쿼리 및 유효성 검사 (Zod)
+┣ 📂 hooks/          # 데이터 페칭 및 상태 관리 커스텀 훅
+┣ 📂 lib/            # 외부 라이브러리 설정 (Cloudinary·Neon·Tailwind CSS)
+┣ 📂 constants/      # 전역 상수
+┣ 📂 utils/          # 유틸리티 함수
+┗ 📂 db/             # SQL 쿼리 파일
 ```
