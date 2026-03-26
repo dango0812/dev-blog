@@ -18,6 +18,7 @@ export const env = createEnv({
     GITHUB_REDIRECT_URI: z.url(),
     GITHUB_USER_ID: z.string().min(1),
     GITHUB_LOGIN: z.string().min(1),
+    GOOGLE_SEARCH_CONSOLE_KEY: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.url().default('http://localhost:3000'),
@@ -34,5 +35,6 @@ export const env = createEnv({
     GITHUB_REDIRECT_URI: process.env.GITHUB_REDIRECT_URI,
     GITHUB_USER_ID: process.env.GITHUB_USER_ID,
     GITHUB_LOGIN: process.env.GITHUB_LOGIN,
+    GOOGLE_SEARCH_CONSOLE_KEY: process.env.GOOGLE_SEARCH_CONSOLE_KEY,
   },
 });

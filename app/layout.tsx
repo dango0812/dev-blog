@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     canonical: env.NEXT_PUBLIC_APP_URL,
   },
   verification: {
-    google: 'T9aVzu1KtUd9ALZPs6sXPzc4kY6lNdysSJ8sPPBPiCM',
+    google: env.GOOGLE_SEARCH_CONSOLE_KEY,
   },
 };
 
