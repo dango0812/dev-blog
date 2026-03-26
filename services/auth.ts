@@ -12,7 +12,7 @@ export { tokenSchema, userSchema } from './auth.schema';
  *
  * @description OAuth 콜백으로 받은 `code`를 GitHub 토큰 엔드포인트로 보내 액세스 토큰을 발급받는다.
  * @param {string} code - GitHub OAuth 콜백으로 전달된 인증 코드
- * @returns {string} 액세스 토큰 문자열
+ * @returns {Promise<string>} 액세스 토큰 문자열
  *
  * @example
  * const token = await getAccessToken('abc123');
@@ -46,7 +46,7 @@ export async function getAccessToken(code: string): Promise<string> {
  *
  * @description 액세스 토큰으로 GitHub API를 호출하여 사용자 프로필을 가져온다.
  * @param {string} accessToken - GitHub OAuth 액세스 토큰
- * @returns {GitHubUser} GitHub 사용자 정보 객체
+ * @returns {Promise<GitHubUser>} GitHub 사용자 정보 객체
  *
  * @example
  * const user = await getGitHubUser('gho_xxxx');
@@ -69,7 +69,7 @@ export async function getGitHubUser(accessToken: string): Promise<GitHubUser> {
  * 블로그 소유자인지 검증
  *
  * @param {GitHubUser} user - GitHub 사용자 정보 객체
- * @returns 소유자이면 `true`, 아니면 `false`
+ * @returns {boolean} 소유자이면 `true`, 아니면 `false`
  *
  * @example
  * const user = await getGitHubUser(token);
@@ -85,7 +85,7 @@ const cache = new Map<string, { valid: boolean; expires: number }>();
  * 액세스 토큰이 유효한지 확인
  *
  * @param {string} accessToken - GitHub OAuth 액세스 토큰
- * @returns {boolean} 인증된 소유자면 `true`, 아니면 `false`
+ * @returns {Promise<boolean>} 인증된 소유자면 `true`, 아니면 `false`
  *
  * @example
  * const authenticated = await isAuthenticated(accessToken);
