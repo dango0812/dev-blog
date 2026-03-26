@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { API_ROUTES } from '@/constants';
-import type { Post, PostFormSchema } from '@/services/post.schema';
+import { type Post, type PostFormSchema, postSchema } from '@/services/post.schema';
 
 /**
  * 게시글 수정 훅
@@ -30,10 +30,11 @@ async function fetcherUpdatePost(slug: string, data: PostFormSchema): Promise<Po
     body: JSON.stringify(data),
   });
 
+  const resData = await res.json();
+
   if (!res.ok) {
-    const { error } = (await res.json()) as { error: string };
-    throw new Error(error);
+    throw new Error(resData.error);
   }
 
-  return res.json() as Promise<Post>;
+  return postSchema.parse(resData);
 }

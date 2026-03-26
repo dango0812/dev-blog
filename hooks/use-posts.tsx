@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { API_ROUTES, QUERY_KEYS } from '@/constants';
-import type { Post } from '@/services/post.schema';
+import { type Post, postSchema } from '@/services/post.schema';
 
 interface UsePostsParams {
   tag?: string | null;
@@ -34,10 +34,11 @@ async function fetcherPosts(params: UsePostsParams): Promise<Post[]> {
   const url = query ? `${API_ROUTES.POSTS.LIST}?${query}` : API_ROUTES.POSTS.LIST;
 
   const res = await fetch(url);
+  const data = await res.json();
 
   if (!res.ok) {
-    throw new Error('게시글을 불러오지 못했어요');
+    throw new Error(data.error);
   }
 
-  return res.json() as Promise<Post[]>;
+  return postSchema.array().parse(data);
 }

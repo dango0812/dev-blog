@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { API_ROUTES } from '@/constants';
-import type { Post, PostFormSchema } from '@/services/post.schema';
+import { type Post, type PostFormSchema, postSchema } from '@/services/post.schema';
 
 /**
  * 게시글 생성 훅
@@ -29,9 +29,10 @@ async function fetcherCreatePost(data: PostFormSchema): Promise<Post> {
   });
 
   if (!res.ok) {
-    const { error } = (await res.json()) as { error: string };
+    const { error } = await res.json();
     throw new Error(error);
   }
 
-  return res.json() as Promise<Post>;
+  const resData = await res.json();
+  return postSchema.parse(resData);
 }

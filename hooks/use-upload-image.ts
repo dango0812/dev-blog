@@ -28,7 +28,7 @@ async function fetcherUploadImage(file: File): Promise<string> {
   body.append('file', file);
 
   const res = await fetch(API_ROUTES.UPLOAD_IMAGE, { method: 'POST', body });
-  const data = (await res.json()) as { url?: string; error?: string };
+  const data = await res.json();
 
   if (!res.ok || !data.url) {
     throw new Error(data.error ?? '업로드에 실패했어요');
