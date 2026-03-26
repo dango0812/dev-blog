@@ -5,7 +5,8 @@ import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Button, Flex, Spinner } from '@/components/ui';
-import { API_ROUTES } from '@/constants';
+import { useCreatePost } from '@/hooks/use-create-post';
+import { useUpdatePost } from '@/hooks/use-update-post';
 import { type PostFormSchema, postFormSchema } from '@/services/post.schema';
 
 import { CategorySelector } from './category-selector';
@@ -31,6 +32,9 @@ interface PostFormProps {
 export function PostForm({ initialData }: PostFormProps) {
   const isEditMode = Boolean(initialData);
 
+  const { mutateAsync: createPost } = useCreatePost();
+  const { mutateAsync: updatePost } = useUpdatePost(initialData?.slug ?? '');
+
   const methods = useForm<PostFormSchema>({
     resolver: zodResolver(postFormSchema),
     defaultValues: initialData ?? defaultValues,
@@ -43,25 +47,15 @@ export function PostForm({ initialData }: PostFormProps) {
 
   const onSubmit: SubmitHandler<PostFormSchema> = async data => {
     try {
-      const url = isEditMode ? API_ROUTES.POSTS.UPDATE(initialData!.slug) : API_ROUTES.POSTS.CREATE;
-      const method = isEditMode ? 'PATCH' : 'POST';
-
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        const { error } = (await res.json()) as { error: string };
-        toast.error(error);
-        return;
+      if (isEditMode) {
+        await updatePost(data);
+        toast.success('게시글이 성공적으로 수정되었어요');
+      } else {
+        await createPost(data);
+        toast.success('게시글이 성공적으로 생성되었어요');
       }
-
-      const successMsg = isEditMode ? '게시글이 성공적으로 수정되었어요' : '게시글이 성공적으로 생성되었어요';
-      toast.success(successMsg);
-    } catch {
-      toast.error('서버 오류가 발생했어요');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : '서버 오류가 발생했어요');
     }
   };
 
