@@ -7,17 +7,26 @@ import { useTheme } from 'next-themes';
 import { Container, Flex, Text } from '@/components/ui';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { GITHUB_URL, PATHS } from '@/constants';
+import { useScrollTop } from '@/hooks/use-scroll-top';
 import { cn } from '@/lib/tailwind';
 
 export function Header() {
   const { resolvedTheme, setTheme } = useTheme();
+  const { isScrollTop } = useScrollTop();
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
 
   return (
-    <Flex as="header" alignItems="center" className="sticky top-0 z-50 border-b border-border bg-background">
+    <Flex
+      as="header"
+      alignItems="center"
+      className={cn(
+        'sticky top-0 z-50 bg-background/80 backdrop-blur-sm transition-[border-color] duration-200',
+        isScrollTop ? 'border-b border-transparent' : 'border-b border-border',
+      )}
+    >
       <Container maxWidth="lg" className="px-6 py-4">
         <Flex justifyContent="space-between" alignItems="center">
           <Link href={PATHS.HOME}>
