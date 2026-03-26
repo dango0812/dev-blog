@@ -41,10 +41,11 @@ interface UtterancesProps {
  */
 export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
   const pathname = usePathname();
+  const cacheKey = getCacheKey(pathname, issueTerm);
   const { resolvedTheme } = useTheme();
 
   const mountRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(() => !utterancesCache.get(pathname)?.ready);
+  const [loading, setLoading] = useState(() => !utterancesCache.get(cacheKey)?.ready);
 
   const utterancesTheme: UtterancesTheme = resolvedTheme === 'dark' ? 'github-dark' : 'github-light';
 
@@ -59,7 +60,7 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
       return;
     }
 
-    const cached = utterancesCache.get(pathname);
+    const cached = utterancesCache.get(cacheKey);
 
     // 기존 컨테이너로 마운트
     if (cached?.ready) {
@@ -75,7 +76,7 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
     // 새 컨테이너 생성
     const container = document.createElement('div');
     const entry: CacheEntry = { container, ready: false };
-    utterancesCache.set(pathname, entry);
+    utterancesCache.set(cacheKey, entry);
     mount.appendChild(container);
     setLoading(true);
 
@@ -87,6 +88,8 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
       if (event.data?.type === 'resize') {
         entry.ready = true;
         setLoading(false);
+        // 로딩 중 테마가 바뀌었을 수 있으므로 ready 시점에 한번 동기화
+        syncTheme(cacheKey, themeRef.current);
         window.removeEventListener('message', handleMessage);
       }
     };
@@ -99,11 +102,11 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
         mount.removeChild(container);
       }
     };
-  }, [pathname, issueTerm]);
+  }, [cacheKey, issueTerm]);
 
   useEffect(() => {
-    syncTheme(pathname, utterancesTheme);
-  }, [pathname, utterancesTheme]);
+    syncTheme(cacheKey, utterancesTheme);
+  }, [cacheKey, utterancesTheme]);
 
   return (
     <div className="relative mt-10 min-h-60">
@@ -125,7 +128,11 @@ function createScript(issueTerm: IssueTerm, theme: UtterancesTheme): HTMLScriptE
   return script;
 }
 
-function syncTheme(pathname: string, theme: UtterancesTheme) {
-  const iframe = utterancesCache.get(pathname)?.container.querySelector<HTMLIFrameElement>('iframe.utterances-frame');
+function getCacheKey(pathname: string, issueTerm: IssueTerm): string {
+  return `${issueTerm}:${pathname}`;
+}
+
+function syncTheme(cacheKey: string, theme: UtterancesTheme) {
+  const iframe = utterancesCache.get(cacheKey)?.container.querySelector<HTMLIFrameElement>('iframe.utterances-frame');
   iframe?.contentWindow?.postMessage({ type: 'set-theme', theme }, UTTERANCES_ORIGIN);
 }
