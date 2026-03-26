@@ -1,7 +1,7 @@
 import { NeonDbError } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 
-import { getPostBySlug, postFormSchema, updatePost } from '@/services/post';
+import { deletePost, getPostBySlug, postFormSchema, updatePost } from '@/services/post';
 
 interface PostDetailRequestContext {
   params: Promise<{ slug: string }>;
@@ -56,6 +56,27 @@ export async function PATCH(request: Request, { params }: PostDetailRequestConte
       return NextResponse.json({ error: '이미 사용 중인 슬러그예요' }, { status: 409 });
     }
 
+    return NextResponse.json({ error: '서버 오류가 발생했어요' }, { status: 500 });
+  }
+}
+
+/**
+ * DELETE /api/posts/[slug]
+ *
+ * 게시글 삭제
+ */
+export async function DELETE(_request: Request, { params }: PostDetailRequestContext) {
+  const { slug } = await params;
+
+  try {
+    const deleted = await deletePost(slug);
+
+    if (!deleted) {
+      return NextResponse.json({ error: '게시글을 찾지 못했어요' }, { status: 404 });
+    }
+
+    return new NextResponse(null, { status: 204 });
+  } catch {
     return NextResponse.json({ error: '서버 오류가 발생했어요' }, { status: 500 });
   }
 }

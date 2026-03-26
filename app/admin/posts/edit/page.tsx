@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { Text } from '@/components/ui';
@@ -10,12 +11,10 @@ interface EditPostPageProps {
   searchParams: Promise<{ slug?: string }>;
 }
 
-export async function generateMetadata() {
-  return {
-    title: '게시글 수정',
-    description: '블로그 게시글을 수정하는 페이지입니다.',
-  };
-}
+export const metadata: Metadata = {
+  title: '게시글 수정',
+  description: '블로그 게시글을 수정하는 페이지입니다.',
+};
 
 export default async function EditPostPage({ searchParams }: EditPostPageProps) {
   const { slug } = await searchParams;

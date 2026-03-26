@@ -121,3 +121,23 @@ export async function updatePost(slug: string, data: PostFormSchema) {
 
   return postSchema.parse(rows[0]);
 }
+
+/**
+ * 게시글 삭제
+ *
+ * @param {string} slug - 삭제할 게시글의 slug
+ * @returns {boolean} 삭제 성공 여부
+ *
+ * @example
+ * const response = await deletePost('blog');
+ * console.log(response); // true (삭제 성공) 또는 false (게시글이 존재하지 않음)
+ */
+export async function deletePost(slug: string) {
+  const rows = await db`
+    DELETE FROM posts
+    WHERE slug = ${slug}
+    RETURNING id
+  `;
+
+  return rows.length > 0;
+}
