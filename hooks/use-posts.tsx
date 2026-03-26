@@ -31,7 +31,7 @@ async function fetcherPosts(params: UsePostsParams): Promise<Post[]> {
   }
 
   const query = searchParams.toString();
-  const url = query ? `${API_ROUTES.POSTS.LIST}?${query}` : API_ROUTES.POSTS.LIST;
+  const url = query ? `${API_ROUTES.POSTS.ROOT}?${query}` : API_ROUTES.POSTS.ROOT;
 
   const res = await fetch(url);
   const data = await res.json();
