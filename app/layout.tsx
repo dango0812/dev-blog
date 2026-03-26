@@ -60,6 +60,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: env.NEXT_PUBLIC_APP_URL,
   },
+  verification: {
+    google: env.GOOGLE_SEARCH_CONSOLE_KEY,
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
