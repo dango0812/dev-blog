@@ -24,7 +24,7 @@ export function useUpdatePost(slug: string) {
 }
 
 async function fetcherUpdatePost(slug: string, data: PostFormSchema): Promise<Post> {
-  const res = await fetch(API_ROUTES.POSTS.UPDATE(slug), {
+  const res = await fetch(API_ROUTES.POSTS.DETAIL(slug), {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

@@ -22,7 +22,7 @@ export function useCreatePost() {
 }
 
 async function fetcherCreatePost(data: PostFormSchema): Promise<Post> {
-  const res = await fetch(API_ROUTES.POSTS.CREATE, {
+  const res = await fetch(API_ROUTES.POSTS.ROOT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
