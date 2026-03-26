@@ -14,7 +14,7 @@
 <img width="1999" height="983" alt="tech-stack" src="https://github.com/user-attachments/assets/dad2f802-0774-4214-b65a-4714f0596b99" />
 
 ## 3️⃣ 아키텍처
-<img width="2000" height="689" alt="architecture" src="https://github.com/user-attachments/assets/b5c45b56-395c-4853-866a-03c12a77712a" />
+<img width="1400" height="440" alt="architecture" src="https://github.com/user-attachments/assets/494d0913-4b93-40ef-8a16-fcd169581988" />
 
 ## 4️⃣ 프로젝트 구조
 ```
