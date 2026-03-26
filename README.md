@@ -4,7 +4,7 @@
 
 
 ## 1️⃣ 페이지 소개
-![post-list](https://github.com/user-attachments/assets/e59640ed-a2c2-49a5-a365-60d9ffc5d4f5)
+![post-list](https://github.com/user-attachments/assets/c19ddca0-cfde-4f2a-9056-aff18d01a314)
 ![post-detail](https://github.com/user-attachments/assets/486c1a34-58ac-4603-8aad-d4aad5dd7a9a)
 ![sign-in](https://github.com/user-attachments/assets/b84b1236-be1a-46ba-a017-3dfe9c62c4a0)
 ![dashboard](https://github.com/user-attachments/assets/967963cf-d46c-4603-abbb-9d0310fc3797)
