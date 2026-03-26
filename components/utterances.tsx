@@ -1,14 +1,33 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
+
+import { cn } from '@/lib/tailwind';
+
+import { Flex } from './ui';
 
 const UTTERANCES_ORIGIN = 'https://utteranc.es';
 const UTTERANCES_SCRIPT_SRC = `${UTTERANCES_ORIGIN}/client.js`;
 
 type UtterancesTheme = 'github-light' | 'github-dark';
 type IssueTerm = 'pathname' | 'url' | 'title' | 'og:title';
+
+interface CacheEntry {
+  container: HTMLDivElement;
+  ready: boolean;
+}
+
+const utterancesCache = new Map<string, CacheEntry>();
+
+const LOADING_OVERLAY = (
+  <Flex alignItems="center" justifyContent="center" className="absolute inset-0 z-10">
+    <Image src="/mona-loading.gif" alt="loading" width={100} height={100} unoptimized />
+  </Flex>
+);
 
 interface UtterancesProps {
   issueTerm?: IssueTerm;
@@ -21,8 +40,12 @@ interface UtterancesProps {
  * <Utterances issueTerm="pathname" />
  */
 export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const cacheKey = getCacheKey(pathname, issueTerm);
   const { resolvedTheme } = useTheme();
+
+  const mountRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(() => !utterancesCache.get(cacheKey)?.ready);
 
   const utterancesTheme: UtterancesTheme = resolvedTheme === 'dark' ? 'github-dark' : 'github-light';
 
@@ -32,38 +55,84 @@ export function Utterances({ issueTerm = 'pathname' }: UtterancesProps) {
 
   // useEffect로 hydration 이후 스크립트 적용 (초기 번들 블로킹 없음)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) {
+    const mount = mountRef.current;
+    if (!mount) {
       return;
     }
 
-    // 이미 삽입된 스크립트가 있으면 중복 주입 방지
-    if (container.querySelector(`script[src="${UTTERANCES_SCRIPT_SRC}"]`)) {
-      return;
+    const cached = utterancesCache.get(cacheKey);
+
+    // 기존 컨테이너로 마운트
+    if (cached?.ready) {
+      mount.appendChild(cached.container);
+      setLoading(false);
+      return () => {
+        if (mount.contains(cached.container)) {
+          mount.removeChild(cached.container);
+        }
+      };
     }
 
-    const script = document.createElement('script');
-    script.src = UTTERANCES_SCRIPT_SRC;
-    script.setAttribute('repo', 'dango0812/dev-blog');
-    script.setAttribute('issue-term', issueTerm);
-    script.setAttribute('theme', themeRef.current);
-    script.setAttribute('label', '💬 comments');
-    script.setAttribute('crossorigin', 'anonymous');
-    script.async = true;
+    // 새 컨테이너 생성
+    const container = document.createElement('div');
+    const entry: CacheEntry = { container, ready: false };
+    utterancesCache.set(cacheKey, entry);
+    mount.appendChild(container);
+    setLoading(true);
 
-    container.appendChild(script);
-  }, [issueTerm]);
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== UTTERANCES_ORIGIN) {
+        return;
+      }
+      // iframe 로드 후 resize 메시지를 보내면 준비 완료로 처리
+      if (event.data?.type === 'resize') {
+        entry.ready = true;
+        setLoading(false);
+        // 로딩 중 테마가 바뀌었을 수 있으므로 ready 시점에 한번 동기화
+        syncTheme(cacheKey, themeRef.current);
+        window.removeEventListener('message', handleMessage);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    container.appendChild(createScript(issueTerm, themeRef.current));
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      if (mount.contains(container)) {
+        mount.removeChild(container);
+      }
+    };
+  }, [cacheKey, issueTerm]);
 
   useEffect(() => {
-    const iframe = document.querySelector<HTMLIFrameElement>('iframe.utterances-frame');
-    if (!iframe?.contentWindow) {
-      return;
-    }
+    syncTheme(cacheKey, utterancesTheme);
+  }, [cacheKey, utterancesTheme]);
 
-    // 테마 변경 → postMessage로 반영, iframe 리로드 없음
-    // utterancesTheme은 렌더 중 파생된 값, state/effect 동기화 불필요
-    iframe.contentWindow.postMessage({ type: 'set-theme', theme: utterancesTheme }, UTTERANCES_ORIGIN);
-  }, [utterancesTheme]);
+  return (
+    <div className="relative mt-10 min-h-60">
+      {loading && LOADING_OVERLAY}
+      <div ref={mountRef} className={cn('transition-opacity duration-300', loading ? 'opacity-0' : 'opacity-100')} />
+    </div>
+  );
+}
 
-  return <div ref={containerRef} className="mt-10 min-h-60" />;
+function createScript(issueTerm: IssueTerm, theme: UtterancesTheme): HTMLScriptElement {
+  const script = document.createElement('script');
+  script.src = UTTERANCES_SCRIPT_SRC;
+  script.setAttribute('repo', 'dango0812/dev-blog');
+  script.setAttribute('issue-term', issueTerm);
+  script.setAttribute('theme', theme);
+  script.setAttribute('label', '💬 comments');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.async = true;
+  return script;
+}
+
+function getCacheKey(pathname: string, issueTerm: IssueTerm): string {
+  return `${issueTerm}:${pathname}`;
+}
+
+function syncTheme(cacheKey: string, theme: UtterancesTheme) {
+  const iframe = utterancesCache.get(cacheKey)?.container.querySelector<HTMLIFrameElement>('iframe.utterances-frame');
+  iframe?.contentWindow?.postMessage({ type: 'set-theme', theme }, UTTERANCES_ORIGIN);
 }
