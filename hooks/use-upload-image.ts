@@ -1,7 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { API_ROUTES } from '@/constants';
+import { http } from '@/lib/http';
 
+interface UploadResponse {
+  url: string;
+}
 /**
  * 이미지 업로드 훅
  *
@@ -19,20 +23,17 @@ import { API_ROUTES } from '@/constants';
  */
 export function useUploadImage() {
   return useMutation({
-    mutationFn: (file: File) => fetcherUploadImage(file),
+    mutationFn: async (file: File) => {
+      const body = new FormData();
+      body.append('file', file);
+
+      const data = await http.post<UploadResponse>(API_ROUTES.UPLOAD_IMAGE, { body });
+
+      if (!data.url) {
+        throw new Error('업로드에 실패했어요');
+      }
+
+      return data.url;
+    },
   });
-}
-
-async function fetcherUploadImage(file: File): Promise<string> {
-  const body = new FormData();
-  body.append('file', file);
-
-  const res = await fetch(API_ROUTES.UPLOAD_IMAGE, { method: 'POST', body });
-  const data = await res.json();
-
-  if (!res.ok || !data.url) {
-    throw new Error(data.error ?? '업로드에 실패했어요');
-  }
-
-  return data.url;
 }

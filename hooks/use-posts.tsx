@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { API_ROUTES, QUERY_KEYS } from '@/constants';
+import { http } from '@/lib/http';
 import { type Post, postSchema } from '@/services/post.schema';
 
 interface UsePostsParams {
@@ -19,26 +20,11 @@ interface UsePostsParams {
 export function usePosts({ tag }: UsePostsParams = {}) {
   return useQuery<Post[]>({
     queryKey: QUERY_KEYS.post.list(tag),
-    queryFn: () => fetcherPosts({ tag }),
+    queryFn: async () => {
+      const data = await http.get<Post[]>(API_ROUTES.POSTS.ROOT, {
+        searchParams: { tag: tag ?? undefined },
+      });
+      return postSchema.array().parse(data);
+    },
   });
-}
-
-async function fetcherPosts(params: UsePostsParams): Promise<Post[]> {
-  const searchParams = new URLSearchParams();
-
-  if (params.tag) {
-    searchParams.set('tag', params.tag);
-  }
-
-  const query = searchParams.toString();
-  const url = query ? `${API_ROUTES.POSTS.ROOT}?${query}` : API_ROUTES.POSTS.ROOT;
-
-  const res = await fetch(url);
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error);
-  }
-
-  return postSchema.array().parse(data);
 }

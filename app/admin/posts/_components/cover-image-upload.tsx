@@ -28,7 +28,7 @@ export function CoverImageUpload() {
     fieldState: { error },
   } = useController({ name: 'coverUrl', control });
 
-  const { mutateAsync: upload, isPending: isUploading } = useUploadImage();
+  const { mutate: uploadImage, isPending: isUploading } = useUploadImage();
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -38,14 +38,11 @@ export function CoverImageUpload() {
     }
 
     setUploadError(null);
-
-    try {
-      const url = await upload(file);
+    uploadImage(file, {
       // 업로드 성공 시 반환된 URL을 폼 필드에 저장
-      field.onChange(url);
-    } catch (err) {
-      setUploadError(err instanceof Error ? err.message : '업로드 중 오류가 발생했어요');
-    }
+      onSuccess: url => field.onChange(url),
+      onError: err => setUploadError(err.message),
+    });
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
