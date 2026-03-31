@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { API_ROUTES } from '@/constants';
+import { API_ROUTES, QUERY_KEYS } from '@/constants';
+import { http } from '@/lib/http';
 import { type Post, type PostFormSchema, postSchema } from '@/services/post.schema';
 
 /**
@@ -18,23 +19,15 @@ import { type Post, type PostFormSchema, postSchema } from '@/services/post.sche
  * }
  */
 export function useUpdatePost(slug: string) {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (data: PostFormSchema) => fetcherUpdatePost(slug, data),
+    mutationFn: async (data: PostFormSchema) => {
+      const resData = await http.patch<Post>(API_ROUTES.POSTS.DETAIL(slug), { json: data });
+      return postSchema.parse(resData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.post.all });
+    },
   });
-}
-
-async function fetcherUpdatePost(slug: string, data: PostFormSchema): Promise<Post> {
-  const res = await fetch(API_ROUTES.POSTS.DETAIL(slug), {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-
-  const resData = await res.json();
-
-  if (!res.ok) {
-    throw new Error(resData.error);
-  }
-
-  return postSchema.parse(resData);
 }

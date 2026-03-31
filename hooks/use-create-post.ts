@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { API_ROUTES } from '@/constants';
+import { API_ROUTES, QUERY_KEYS } from '@/constants';
+import { http } from '@/lib/http';
 import { type Post, type PostFormSchema, postSchema } from '@/services/post.schema';
 
 /**
@@ -16,23 +17,15 @@ import { type Post, type PostFormSchema, postSchema } from '@/services/post.sche
  * }
  */
 export function useCreatePost() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (data: PostFormSchema) => fetcherCreatePost(data),
+    mutationFn: async (data: PostFormSchema) => {
+      const resData = await http.post<Post>(API_ROUTES.POSTS.ROOT, { json: data });
+      return postSchema.parse(resData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.post.all });
+    },
   });
-}
-
-async function fetcherCreatePost(data: PostFormSchema): Promise<Post> {
-  const res = await fetch(API_ROUTES.POSTS.ROOT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) {
-    const { error } = await res.json();
-    throw new Error(error);
-  }
-
-  const resData = await res.json();
-  return postSchema.parse(resData);
 }

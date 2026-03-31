@@ -1,6 +1,7 @@
 import { AUTH_ERRORS } from '@/constants/auth';
 import { OAUTH_ROUTES } from '@/constants/routes';
 import { env } from '@/lib/env';
+import { http } from '@/lib/http';
 
 import { type GitHubUser, tokenSchema, userSchema } from './auth.schema';
 
@@ -19,21 +20,16 @@ export { tokenSchema, userSchema } from './auth.schema';
  * console.log(token); // 'gho_xxxx'
  */
 export async function getAccessToken(code: string): Promise<string> {
-  const res = await fetch(OAUTH_ROUTES.GITHUB.TOKEN, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
+  const data = await http.post<unknown>(OAUTH_ROUTES.GITHUB.TOKEN, {
+    json: {
       client_id: env.GITHUB_CLIENT_ID,
       client_secret: env.GITHUB_CLIENT_SECRET,
       code,
       redirect_uri: env.GITHUB_REDIRECT_URI,
-    }),
+    },
   });
 
-  const tokenData = tokenSchema.safeParse(await res.json());
+  const tokenData = tokenSchema.safeParse(data);
   if (!tokenData.success || tokenData.data.error || !tokenData.data.access_token) {
     throw new Error(AUTH_ERRORS.OAUTH_DENIED);
   }
@@ -53,11 +49,11 @@ export async function getAccessToken(code: string): Promise<string> {
  * console.log(user.login); // 'dango0812'
  */
 export async function getGitHubUser(accessToken: string): Promise<GitHubUser> {
-  const res = await fetch(OAUTH_ROUTES.GITHUB.USER, {
+  const data = await http.get<unknown>(OAUTH_ROUTES.GITHUB.USER, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 
-  const userData = userSchema.safeParse(await res.json());
+  const userData = userSchema.safeParse(data);
   if (!userData.success) {
     throw new Error(AUTH_ERRORS.UNAUTHORIZED);
   }

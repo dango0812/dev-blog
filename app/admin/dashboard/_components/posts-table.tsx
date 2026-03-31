@@ -11,6 +11,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PATHS, type PostType, TYPE_LABEL } from '@/constants';
 import { useDeletePost } from '@/hooks/use-delete-post';
+import { isHttpError } from '@/lib/http';
 import type { Post } from '@/services/post.schema';
 import { formatDate } from '@/utils/date/format-date';
 
@@ -20,20 +21,22 @@ interface PostsTableProps {
 
 export function PostsTable({ posts }: PostsTableProps) {
   const router = useRouter();
-  const { mutateAsync: deletePost } = useDeletePost();
+  const { mutate: deletePost } = useDeletePost();
 
   const handleDelete = async (title: string, slug: string) => {
     if (!confirm(`"${title}" 게시글을 삭제할까요?`)) {
       return;
     }
 
-    try {
-      await deletePost(slug);
-      toast.success('게시글이 삭제되었어요');
-      router.refresh();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : '게시글 삭제에 실패했어요');
-    }
+    deletePost(slug, {
+      onSuccess: () => {
+        toast.success('게시글이 삭제되었어요');
+        router.refresh();
+      },
+      onError: (err: Error) => {
+        toast.error(isHttpError(err) ? err.message : '게시글 삭제에 실패했어요');
+      },
+    });
   };
 
   if (posts.length === 0) {
