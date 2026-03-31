@@ -9,6 +9,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Button, Flex, Text } from '@/components/ui';
 import { useUploadImage } from '@/hooks/use-upload-image';
+import { isHttpError } from '@/lib/http';
 import { cn } from '@/lib/tailwind';
 import type { PostFormSchema } from '@/services/post.schema';
 
@@ -41,7 +42,7 @@ export function CoverImageUpload() {
     uploadImage(file, {
       // 업로드 성공 시 반환된 URL을 폼 필드에 저장
       onSuccess: url => field.onChange(url),
-      onError: err => setUploadError(err.message),
+      onError: err => setUploadError(isHttpError(err) ? err.message : '업로드 중 오류가 발생했어요'),
     });
   };
 

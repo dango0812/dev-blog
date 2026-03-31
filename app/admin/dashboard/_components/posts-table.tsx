@@ -11,6 +11,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PATHS, type PostType, TYPE_LABEL } from '@/constants';
 import { useDeletePost } from '@/hooks/use-delete-post';
+import { isHttpError } from '@/lib/http';
 import type { Post } from '@/services/post.schema';
 import { formatDate } from '@/utils/date/format-date';
 
@@ -33,7 +34,7 @@ export function PostsTable({ posts }: PostsTableProps) {
         router.refresh();
       },
       onError: (err: Error) => {
-        toast.error(err.message || '게시글 삭제에 실패했어요');
+        toast.error(isHttpError(err) ? err.message : '게시글 삭제에 실패했어요');
       },
     });
   };

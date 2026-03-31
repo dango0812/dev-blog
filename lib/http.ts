@@ -10,7 +10,7 @@ class HttpError<T = unknown> extends Error {
   readonly data?: T;
 
   constructor(status: number, data?: T) {
-    super(isPlainObject(data) && typeof data.error === 'string' ? data.error : `HTTP Error ${status}`);
+    super(isPlainObject(data) && typeof data.error === 'string' ? data.error : `문제가 발생했어요 ${status}`);
     this.status = status;
     this.data = data;
   }
