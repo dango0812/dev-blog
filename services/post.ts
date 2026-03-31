@@ -44,7 +44,7 @@ export const getPostBySlug = cache(async (slug: string) => {
  * const allPosts = await getPosts();
  * const frontendPosts = await getPosts('Frontend');
  */
-export async function getPosts(tag?: string | null) {
+export const getPosts = cache(async (tag?: string | null) => {
   const rows = await db`
     SELECT
       id, slug, title, type, tag, content,
@@ -57,7 +57,7 @@ export async function getPosts(tag?: string | null) {
   `;
 
   return postSchema.array().parse(rows);
-}
+});
 
 /**
  * 게시글 생성
