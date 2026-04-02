@@ -1,6 +1,9 @@
+'use client';
+
 import { FileText, TrendingUp } from 'lucide-react';
 
 import { Flex, Text } from '@/components/ui';
+import { usePosts } from '@/hooks/use-posts';
 
 interface StatsCardProps {
   icon: React.ReactNode;
@@ -9,11 +12,10 @@ interface StatsCardProps {
   description?: string;
 }
 
-interface DashboardStatsProps {
-  totalPosts: number;
-}
+export function DashboardStats() {
+  const { data: posts = [] } = usePosts();
+  const totalPosts = posts.length;
 
-export function DashboardStats({ totalPosts }: DashboardStatsProps) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <StatsCard
