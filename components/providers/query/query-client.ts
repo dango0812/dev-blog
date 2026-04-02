@@ -9,7 +9,6 @@ export const queryClientConfig = {
     queries: {
       staleTime: STALE_TIME,
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
       refetchOnReconnect: false,
       retry: 1,
     },

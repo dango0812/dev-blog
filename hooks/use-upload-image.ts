@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { API_ROUTES } from '@/constants';
+import { API_ROUTES, QUERY_KEYS } from '@/constants';
 import { http } from '@/lib/http';
 
 interface UploadResponse {
@@ -22,6 +22,8 @@ interface UploadResponse {
  * }
  */
 export function useUploadImage() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (file: File) => {
       const body = new FormData();
@@ -34,6 +36,9 @@ export function useUploadImage() {
       }
 
       return data.url;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.post.all });
     },
   });
 }

@@ -2,25 +2,21 @@
 
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { EmptyContent } from '@/components/empty-content';
 import { Badge, Button, Flex } from '@/components/ui';
 import { buttonVariants } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PATHS, type PostType, TYPE_LABEL } from '@/constants';
 import { useDeletePost } from '@/hooks/use-delete-post';
+import { usePosts } from '@/hooks/use-posts';
 import { isHttpError } from '@/lib/http';
-import type { Post } from '@/services/post.schema';
 import { formatDate } from '@/utils/date/format-date';
 
-interface PostsTableProps {
-  posts: Post[];
-}
-
-export function PostsTable({ posts }: PostsTableProps) {
-  const router = useRouter();
+export function PostsTable() {
+  const { data: posts, isLoading } = usePosts();
   const { mutate: deletePost } = useDeletePost();
 
   const handleDelete = async (title: string, slug: string) => {
@@ -31,7 +27,6 @@ export function PostsTable({ posts }: PostsTableProps) {
     deletePost(slug, {
       onSuccess: () => {
         toast.success('게시글이 삭제되었어요');
-        router.refresh();
       },
       onError: (err: Error) => {
         toast.error(isHttpError(err) ? err.message : '게시글 삭제에 실패했어요');
@@ -39,7 +34,16 @@ export function PostsTable({ posts }: PostsTableProps) {
     });
   };
 
-  if (posts.length === 0) {
+  if (isLoading) {
+    return (
+      <Flex alignItems="center" justifyContent="center" className="py-10">
+        <Spinner />
+      </Flex>
+    );
+  }
+
+  const isEmpty = !posts || posts.length === 0;
+  if (isEmpty) {
     return (
       <Flex alignItems="center" justifyContent="center">
         <EmptyContent title="아직 작성된 게시글이 없습니다" />
