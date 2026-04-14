@@ -29,8 +29,8 @@ export function Header() {
     >
       <Container maxWidth="lg" className="px-6 py-4">
         <Flex justifyContent="space-between" alignItems="center">
-          <Link href={PATHS.HOME}>
-            <Text as="span" className="text-lg font-semibold tracking-tight">
+          <Link href={PATHS.HOME} aria-label="동규의 개발 블로그">
+            <Text as="span" aria-hidden="true" className="text-lg font-semibold tracking-tight">
               Donggyu
             </Text>
           </Link>

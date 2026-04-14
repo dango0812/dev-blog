@@ -3,9 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Badge, Flex, Text } from '@/components/ui';
-import { PATHS } from '@/constants';
+import { PATHS, TAG_LABEL } from '@/constants';
 import type { Post } from '@/services/post';
-import { formatDate } from '@/utils';
+import { formatDate, formatDateKor } from '@/utils';
 
 interface PostCardProps {
   post: Post;
@@ -37,14 +37,19 @@ export function PostCard({ post }: PostCardProps) {
         </div>
 
         <Flex direction="column" className="mt-4 gap-0.5">
-          <Badge className="bg-transparent p-0 text-sm font-medium text-blue-400">{post.tag}</Badge>
+          <Badge
+            aria-label={TAG_LABEL[post.tag as keyof typeof TAG_LABEL]}
+            className="bg-transparent p-0 text-sm font-medium text-blue-400"
+          >
+            {post.tag}
+          </Badge>
 
           <Flex direction="column" className="gap-1">
             <Text as="h3" className="line-clamp-2 text-base leading-snug font-semibold text-foreground">
               {post.title}
             </Text>
 
-            <Text as="span" className="text-xs text-muted-foreground">
+            <Text as="span" aria-label={formatDateKor(post.createdAt)} className="text-xs text-muted-foreground">
               {formatDate(post.createdAt)}
             </Text>
           </Flex>
