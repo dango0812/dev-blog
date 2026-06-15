@@ -1,5 +1,5 @@
+import { OAUTH_ROUTES } from '@/app/api/endpoints';
 import { AUTH_ERRORS } from '@/constants/auth';
-import { OAUTH_ROUTES } from '@/constants/routes';
 import { env } from '@/lib/env';
 import { http } from '@/lib/http';
 

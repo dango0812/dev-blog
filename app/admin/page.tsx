@@ -2,12 +2,12 @@ import { Github } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { OAUTH_ROUTES } from '@/app/api/endpoints';
 import { Button } from '@/components/ui/button';
 import { Flex } from '@/components/ui/flex';
 import { Text } from '@/components/ui/text';
 import { SITE_CONFIG } from '@/constants';
 import { AUTH_ERROR_MESSAGES } from '@/constants/auth';
-import { OAUTH_ROUTES } from '@/constants/routes';
 import { env } from '@/lib/env';
 
 export const metadata: Metadata = {
