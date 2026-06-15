@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { API_ROUTES, QUERY_KEYS } from '@/constants';
+import { API_ROUTES } from '@/app/api/endpoints';
+import { QUERY_KEYS } from '@/app/api/query-keys';
 import { http } from '@/lib/http';
 
 /**

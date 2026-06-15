@@ -2,8 +2,8 @@
 
 import { FileText, TrendingUp } from 'lucide-react';
 
+import { usePosts } from '@/app/(posts)/_hooks/use-posts';
 import { Flex, Text } from '@/components/ui';
-import { usePosts } from '@/hooks/use-posts';
 
 interface StatsCardProps {
   icon: React.ReactNode;
