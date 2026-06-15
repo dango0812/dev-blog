@@ -2,9 +2,9 @@ import { Suspense } from 'react';
 
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
+import { QUERY_KEYS } from '@/app/api/query-keys';
 import { getQueryClient } from '@/components/providers/query';
 import { Container, Flex } from '@/components/ui';
-import { QUERY_KEYS } from '@/constants';
 import { getPosts } from '@/services/post';
 
 import { PostList } from './_components/post-list';

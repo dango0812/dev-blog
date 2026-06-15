@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { API_ROUTES, QUERY_KEYS } from '@/constants';
+import { QUERY_KEYS } from '@/app/api/query-keys';
+import { API_ROUTES } from '@/constants';
 import { http } from '@/lib/http';
 import { type Post, postSchema } from '@/services/post.schema';
 

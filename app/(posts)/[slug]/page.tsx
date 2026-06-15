@@ -11,7 +11,7 @@ import { formatDateKor } from '@/utils/date/format-date';
 import { getArticleSchema } from '@/utils/metadata/article-schema';
 import { generatePostDescription } from '@/utils/metadata/generate-post-description';
 
-import { PostContent } from './_components/post-content';
+import { PostContent } from '../_components/post-content';
 
 interface PostDetailPageProps {
   params: Promise<{ slug: string }>;

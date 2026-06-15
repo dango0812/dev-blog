@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation';
 
 import { EmptyContent } from '@/components/empty-content';
 import { Flex } from '@/components/ui';
-import { usePosts } from '@/hooks/use-posts';
 
+import { usePosts } from '../_hooks/use-posts';
 import { PostCard } from './post-card';
 import { PostListSkeleton } from './post-list-skeleton';
 
