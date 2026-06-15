@@ -1,4 +1,3 @@
-export { API_ROUTES } from '../app/api/endpoints';
 export { PATHS } from './paths';
 export type { PostTag, PostType } from './post';
 export { POST_TAGS, POST_TYPES, TAG_LABEL, TYPE_LABEL } from './post';
