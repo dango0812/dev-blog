@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@/app/api/query-keys';
 import { getQueryClient } from '@/components/providers/query';
 import { Button, Container, Flex, Text } from '@/components/ui';
 import { PATHS } from '@/constants';
-import { getPosts } from '@/services/post';
+import { getPosts } from '@/utils/post';
 
 import { DashboardStats } from './_components/dashboard-stats';
 import { PostsTable } from './_components/posts-table';

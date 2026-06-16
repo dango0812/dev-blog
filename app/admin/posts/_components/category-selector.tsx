@@ -4,7 +4,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Button, Flex, Text } from '@/components/ui';
 import { POST_TYPES, TYPE_LABEL } from '@/constants';
-import type { PostFormSchema } from '@/services/post.schema';
+import type { PostFormSchema } from '@/model/post';
 
 export function CategorySelector() {
   const { control } = useFormContext<PostFormSchema>();

@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { PATHS } from '@/constants';
 import { AUTH_COOKIE_NAME, AUTH_ERRORS } from '@/constants/auth';
-import { getAccessToken, getGitHubUser, isAuthorized } from '@/services/auth';
+import { getAccessToken, getGitHubUser, isAuthorized } from '@/utils/auth';
 
 /**
  * GET /api/auth/callback/github

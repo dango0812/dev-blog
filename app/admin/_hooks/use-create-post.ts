@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { API_ROUTES } from '@/app/api/endpoints';
 import { QUERY_KEYS } from '@/app/api/query-keys';
 import { http } from '@/lib/http';
-import { type Post, type PostFormSchema, postSchema } from '@/services/post.schema';
+import { type Post, type PostFormSchema, postSchema } from '@/model/post';
 
 /**
  * 게시글 생성 훅

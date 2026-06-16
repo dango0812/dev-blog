@@ -5,7 +5,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/app/api/query-keys';
 import { getQueryClient } from '@/components/providers/query';
 import { Container, Flex } from '@/components/ui';
-import { getPosts } from '@/services/post';
+import { getPosts } from '@/utils/post';
 
 import { PostList } from './_components/post-list';
 import { PostListSkeleton } from './_components/post-list-skeleton';

@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { unstable_cache } from 'next/cache';
 
 import { env } from '@/lib/env';
-import { getPosts } from '@/services/post';
+import { getPosts } from '@/utils/post';
 
 const getCachedPosts = unstable_cache(getPosts, ['sitemap-posts'], { revalidate: 86400 }); // 24시간마다 캐시 갱신
 

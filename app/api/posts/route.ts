@@ -1,7 +1,8 @@
 import { NeonDbError } from '@neondatabase/serverless';
 import { NextResponse } from 'next/server';
 
-import { createPost, getPosts, postFormSchema } from '@/services/post';
+import { postFormSchema } from '@/model/post';
+import { createPost, getPosts } from '@/utils/post';
 
 /**
  * GET /api/posts

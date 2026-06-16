@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { API_ROUTES } from '@/app/api/endpoints';
 import { QUERY_KEYS } from '@/app/api/query-keys';
 import { http } from '@/lib/http';
-import { type Post, postSchema } from '@/services/post.schema';
+import { type Post, postSchema } from '@/model/post';
 
 interface UsePostsParams {
   tag?: string | null;
