@@ -1,0 +1,40 @@
+import { z } from 'zod';
+
+import { POST_TAGS, POST_TYPES } from '@/constants';
+
+const dateString = z.preprocess(val => (val instanceof Date ? val.toISOString() : val), z.string());
+
+export const postSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  title: z.string(),
+  type: z.string(),
+  tag: z.string(),
+  content: z.string(),
+  coverUrl: z.string().nullable(),
+  createdAt: dateString,
+  updatedAt: dateString,
+});
+
+export const postFormSchema = z.object({
+  coverUrl: z.url('올바른 이미지 URL을 입력해주세요').nullable(),
+  slug: z
+    .string()
+    .min(1, '슬러그를 입력해주세요')
+    .max(80, '슬러그는 80자 이내로 입력해주세요')
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, '영문 소문자, 숫자, 하이픈(-)만 사용할 수 있어요'),
+  title: z.string().min(1, '제목을 입력해주세요').max(100, '제목은 100자 이내로 입력해주세요'),
+  type: z.enum(POST_TYPES),
+  tag: z.enum(POST_TAGS),
+  content: z.string().refine(
+    value =>
+      value
+        .replace(/<[^>]*>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .trim().length > 0,
+    '내용을 입력해주세요',
+  ),
+});
+
+export type Post = z.infer<typeof postSchema>;
+export type PostFormSchema = z.infer<typeof postFormSchema>;
