@@ -2,7 +2,7 @@
 export const POST_TYPES = ['tech', 'insight'] as const;
 export type PostType = (typeof POST_TYPES)[number];
 
-/** 게시글 타입 라벨 */
+/** 게시글 타입 레이블 */
 export const TYPE_LABEL: Record<PostType, string> = {
   tech: '기술',
   insight: '인사이트',
@@ -12,7 +12,7 @@ export const TYPE_LABEL: Record<PostType, string> = {
 export const POST_TAGS = ['2026', 'Frontend', 'Design Pattern'] as const;
 export type PostTag = (typeof POST_TAGS)[number];
 
-/** 게시글 태그 한글 라벨 */
+/** 게시글 태그 한글 레이블 */
 export const TAG_LABEL: Record<PostTag, string> = {
   '2026': '2026',
   Frontend: '프론트엔드',
