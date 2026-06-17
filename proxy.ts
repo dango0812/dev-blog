@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { PATHS } from '@/constants';
-import { isAuthenticated } from '@/services/auth';
+import { isAuthenticated } from '@/utils/auth';
 
 import { AUTH_COOKIE_NAME } from './constants/auth';
 

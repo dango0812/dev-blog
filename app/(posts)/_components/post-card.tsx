@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 import { Badge, Flex, Text } from '@/components/ui';
 import { PATHS, TAG_LABEL } from '@/constants';
-import type { Post } from '@/services/post';
-import { formatDate, formatDateKor } from '@/utils';
+import type { Post } from '@/model/post';
+import { formatDate, formatDateKor } from '@/utils/date';
 
 interface PostCardProps {
   post: Post;

@@ -4,10 +4,11 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { QUERY_KEYS } from '@/app/api/query-keys';
 import { getQueryClient } from '@/components/providers/query';
 import { Button, Container, Flex, Text } from '@/components/ui';
-import { PATHS, QUERY_KEYS } from '@/constants';
-import { getPosts } from '@/services/post';
+import { PATHS } from '@/constants';
+import { getPosts } from '@/utils/post';
 
 import { DashboardStats } from './_components/dashboard-stats';
 import { PostsTable } from './_components/posts-table';

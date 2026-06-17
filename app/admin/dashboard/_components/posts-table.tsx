@@ -4,16 +4,17 @@ import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
+import { usePosts } from '@/app/(posts)/_hooks/use-posts';
 import { EmptyContent } from '@/components/empty-content';
 import { Badge, Button, Flex } from '@/components/ui';
 import { buttonVariants } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PATHS, type PostType, TYPE_LABEL } from '@/constants';
-import { useDeletePost } from '@/hooks/use-delete-post';
-import { usePosts } from '@/hooks/use-posts';
 import { isHttpError } from '@/lib/http';
 import { formatDate } from '@/utils/date/format-date';
+
+import { useDeletePost } from '../../_hooks/use-delete-post';
 
 export function PostsTable() {
   const { data: posts, isLoading } = usePosts();

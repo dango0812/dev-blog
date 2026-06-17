@@ -3,7 +3,7 @@ import { type ChangeEvent, useCallback, useRef } from 'react';
 import type { Editor } from '@tiptap/react';
 import { toast } from 'sonner';
 
-import { API_ROUTES } from '@/constants';
+import { API_ROUTES } from '@/app/api/endpoints';
 import { http, isHttpError } from '@/lib/http';
 
 interface UploadResponse {

@@ -8,10 +8,11 @@ import { useDropzone } from 'react-dropzone';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Button, Flex, Text } from '@/components/ui';
-import { useUploadImage } from '@/hooks/use-upload-image';
 import { isHttpError } from '@/lib/http';
 import { cn } from '@/lib/tailwind';
-import type { PostFormSchema } from '@/services/post.schema';
+import type { PostFormSchema } from '@/model/post';
+
+import { useUploadImage } from '../../_hooks/use-upload-image';
 
 const ACCEPTED_IMAGE_TYPES = { 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] };
 

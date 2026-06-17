@@ -5,10 +5,10 @@ import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Button, Flex, Spinner } from '@/components/ui';
-import { useCreatePost } from '@/hooks/use-create-post';
-import { useUpdatePost } from '@/hooks/use-update-post';
-import { type PostFormSchema, postFormSchema } from '@/services/post.schema';
+import { type PostFormSchema, postFormSchema } from '@/model/post';
 
+import { useCreatePost } from '../../_hooks/use-create-post';
+import { useUpdatePost } from '../../_hooks/use-update-post';
 import { CategorySelector } from './category-selector';
 import { ContentEditor } from './content-editor';
 import { CoverImageUpload } from './cover-image-upload';

@@ -6,12 +6,9 @@ import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
 import { env } from '@/lib/env';
-import { getPostBySlug } from '@/services/post';
-import { formatDateKor } from '@/utils/date/format-date';
-import { getArticleSchema } from '@/utils/metadata/article-schema';
-import { generatePostDescription } from '@/utils/metadata/generate-post-description';
+import { formatDateKor, generatePostDescription, getArticleSchema, getPostBySlug } from '@/utils';
 
-import { PostContent } from './_components/post-content';
+import { PostContent } from '../_components/post-content';
 
 interface PostDetailPageProps {
   params: Promise<{ slug: string }>;

@@ -3,7 +3,7 @@
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Flex, Input, Text } from '@/components/ui';
-import type { PostFormSchema } from '@/services/post.schema';
+import type { PostFormSchema } from '@/model/post';
 
 export function TitleField() {
   const { control } = useFormContext<PostFormSchema>();
