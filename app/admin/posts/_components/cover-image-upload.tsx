@@ -10,7 +10,7 @@ import { useController, useFormContext } from 'react-hook-form';
 import { Button, Flex, Text } from '@/components/ui';
 import { isHttpError } from '@/lib/http';
 import { cn } from '@/lib/tailwind';
-import type { PostFormSchema } from '@/services/post.schema';
+import type { PostFormSchema } from '@/model/post';
 
 import { useUploadImage } from '../../_hooks/use-upload-image';
 
