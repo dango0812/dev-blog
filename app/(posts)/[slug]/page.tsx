@@ -6,10 +6,7 @@ import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
 import { env } from '@/lib/env';
-import { formatDateKor } from '@/utils/date/format-date';
-import { getArticleSchema } from '@/utils/metadata/article-schema';
-import { generatePostDescription } from '@/utils/metadata/generate-post-description';
-import { getPostBySlug } from '@/utils/post';
+import { formatDateKor, generatePostDescription, getArticleSchema, getPostBySlug } from '@/utils';
 
 import { PostContent } from '../_components/post-content';
 

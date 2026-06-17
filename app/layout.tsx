@@ -9,7 +9,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { SchemaScript } from '@/components/schema-script';
 import { OPEN_GRAPH_URL, SITE_CONFIG } from '@/constants';
 import { env } from '@/lib/env';
-import { getWebSiteSchema } from '@/utils/metadata/website-schema';
+import { getWebSiteSchema } from '@/utils';
 
 import './globals.css';
 
