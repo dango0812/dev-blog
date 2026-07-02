@@ -6,7 +6,7 @@ import { SchemaScript } from '@/components/schema-script';
 import { Container, Flex, Text } from '@/components/ui';
 import { Utterances } from '@/components/utterances';
 import { env } from '@/lib/env';
-import { formatDateKor, generatePostDescription, getArticleSchema, getPostBySlug } from '@/utils';
+import { formatDateKor, generatePostDescription, getArticleSchema, getPostBySlug, getPosts } from '@/utils';
 
 import { PostContent } from '../_components/post-content';
 
@@ -42,6 +42,11 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
       canonical: `${env.NEXT_PUBLIC_APP_URL}/${post.slug}`,
     },
   };
+}
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map(post => ({ slug: post.slug }));
 }
 
 export default async function PostDetailPage({ params }: PostDetailPageProps) {

@@ -1,4 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 import { postFormSchema } from '@/model/post';
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
 
   try {
     const post = await createPost(result.data);
+    revalidatePath('/');
     return NextResponse.json(post, { status: 201 });
   } catch (err) {
     if (err instanceof NeonDbError && err.code === '23505') {

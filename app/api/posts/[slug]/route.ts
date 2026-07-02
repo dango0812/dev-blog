@@ -1,4 +1,5 @@
 import { NeonDbError } from '@neondatabase/serverless';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 import { postFormSchema } from '@/model/post';
@@ -51,6 +52,8 @@ export async function PATCH(request: Request, { params }: PostDetailRequestConte
       return NextResponse.json({ error: '게시글을 찾지 못했어요' }, { status: 404 });
     }
 
+    revalidatePath('/');
+    revalidatePath(`/${slug}`);
     return NextResponse.json(post, { status: 200 });
   } catch (err) {
     if (err instanceof NeonDbError && err.code === '23505') {
@@ -76,6 +79,7 @@ export async function DELETE(_request: Request, { params }: PostDetailRequestCon
       return NextResponse.json({ error: '게시글을 찾지 못했어요' }, { status: 404 });
     }
 
+    revalidatePath('/');
     return new NextResponse(null, { status: 204 });
   } catch {
     return NextResponse.json({ error: '서버 오류가 발생했어요' }, { status: 500 });
