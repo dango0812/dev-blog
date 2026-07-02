@@ -1,5 +1,4 @@
-#!/usr/bin/env sh
-set -e
-echo "[STARTED] 💡 Running eslint & prettier for staged files..."
+#!/bin/sh
+
+# Run lint-staged to lint and format only staged files before committing
 pnpm lint-staged
-echo "[COMPLETED] ✅ ESLint & Prettier check completed."
